@@ -1,13 +1,13 @@
-package com.jonyshare.jonyshare;
+package com.jonyshare;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class JonyshareApplication {
+public class EurekaApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(JonyshareApplication.class, args);
+        SpringApplication.run(EurekaApplication.class, args);
     }
 
 }
