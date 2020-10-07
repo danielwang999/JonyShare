@@ -1,4 +1,4 @@
-package com.jonyshare;
+package com.jonyshare.eureka;
 
 
 import org.slf4j.Logger;
