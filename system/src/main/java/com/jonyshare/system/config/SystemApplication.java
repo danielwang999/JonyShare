@@ -1,4 +1,4 @@
-package com.jonyshare.system;
+package com.jonyshare.system.config;
 
 
 import org.mybatis.spring.annotation.MapperScan;
