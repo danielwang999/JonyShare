@@ -38,6 +38,12 @@
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
 
+        <!-- 引入server工共模块 -->
+        <dependency>
+            <groupId>com.jonyshare</groupId>
+            <artifactId>server</artifactId>
+        </dependency>
+
     </dependencies>
 
 

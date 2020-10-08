@@ -1,7 +1,8 @@
 package com.jonyshare.system.controller;
 
-import com.jonyshare.system.domain.Test;
-import com.jonyshare.system.service.TestService;
+
+import com.jonyshare.server.domain.Test;
+import com.jonyshare.server.service.TestService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

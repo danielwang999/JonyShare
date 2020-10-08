@@ -7,14 +7,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
 @SpringBootApplication
 @EnableEurekaClient
-@MapperScan("com.jonyshare.system.mapper")
+@ComponentScan("com.jonyshare")
+@MapperScan("com.jonyshare.server.mapper")
 public class SystemApplication {
     private static final Logger LOG = LoggerFactory.getLogger(SystemApplication.class);
-
 
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(SystemApplication.class);

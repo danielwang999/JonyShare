@@ -45,6 +45,13 @@
                 <version>${mysql.version}</version>
             </dependency>
 
+            <!-- 引入server工共模块 -->
+            <dependency>
+                <groupId>com.jonyshare</groupId>
+                <artifactId>server</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
