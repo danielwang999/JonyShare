@@ -2,6 +2,7 @@ package com.jonyshare.server.service;
 
 
 import com.jonyshare.server.domain.Test;
+import com.jonyshare.server.domain.TestExample;
 import com.jonyshare.server.mapper.TestMapper;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,8 @@ public class TestService {
     TestMapper testMapper;
 
     public List<Test> list() {
-//        return testMapper.list();
-        return null;
+        TestExample testExample = new TestExample();
+        testExample.setOrderByClause("id desc");
+        return testMapper.selectByExample(testExample);
     }
 }
