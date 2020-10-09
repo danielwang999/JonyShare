@@ -21,6 +21,12 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
+        <!-- 热部署devtools -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
