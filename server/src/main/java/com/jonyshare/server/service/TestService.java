@@ -19,6 +19,7 @@ public class TestService {
     TestMapper testMapper;
 
     public List<Test> list() {
-        return testMapper.list();
+//        return testMapper.list();
+        return null;
     }
 }
