@@ -7,10 +7,10 @@
             <div class="center">
               <h1>
                 <i class="ace-icon fa fa-leaf green"></i>
-                <span class="red">Ace</span>
-                <span class="white" id="id-text2">Application</span>
+                <span class="white" id="id-text2">享教你</span>
+                <span class="red">控台管理系统</span>
               </h1>
-              <h4 class="blue" id="id-company-text">Company Name</h4>
+              <h4 class="blue" id="id-company-text">JonyShare</h4>
             </div>
 
             <div class="space-6"></div>
@@ -76,9 +76,12 @@
 </template>
 
 <script>
-  $('body').attr('class', 'login-layout light-login');
   export default {
-    name: 'App',
+    name: 'login',
+    mounted: function() {
+      $("body").removeClass("no-skin");
+      $('body').attr('class', 'login-layout light-login');
+    },
     methods: {
       login() {
         this.$router.push("/admin")
