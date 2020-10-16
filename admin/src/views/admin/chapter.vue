@@ -978,8 +978,30 @@
     mounted: function() {
       // sidebar激活样式方法一
       // this.$parent.activeSidebar("business-chapter-sidebar");
+      let _this = this;
+      _this.list();
     },
     methods: {
+      /**
+       * 列表查询
+       */
+      list(page) {
+        let _this = this;
+        _this.$ajax.get('http://127.0.0.1:9002/business/admin/chapter/list').then((response)=>{
+          console.log("查询大章列表结果：", response);
+        })
+        // Loading.show();
+        // _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/chapter/list', {
+        //   page: page,
+        //   size: _this.$refs.pagination.size,
+        //   courseId: _this.course.id
+        // }).then((response)=>{
+        //   Loading.hide();
+        //   let resp = response.data;
+        //   _this.chapters = resp.content.list;
+        //   _this.$refs.pagination.render(page, resp.content.total);
+        // })
+      },
     }
   }
 </script>
