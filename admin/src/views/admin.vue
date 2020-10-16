@@ -510,8 +510,31 @@
   export default {
     name: "admin",
     mounted: function() {
+      let _this = this;
       $("body").removeClass("login-layout light-login");
       $("body").attr("class", "no-skin");
+      // 初始化
+      _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
+
+    },
+    watch: {
+      // 这里是监听路由跳转，进行导航栏的激活功能
+      $route: {
+        handler:function(val, oldVal){
+          // sidebar激活样式方法二
+          console.log("---->页面跳转：", val, oldVal);
+          let _this = this;
+
+          // if (!_this.hasResourceRouter(val.name)) {
+          //   _this.$router.push("/login");
+          //   return;
+          // }
+
+          _this.$nextTick(function(){  //页面加载完成后执行
+            _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
+          })
+        }
+      }
     },
     methods: {
       /**
