@@ -434,7 +434,10 @@
             <div class="row">
               <div class="col-xs-12">
                 <!-- PAGE CONTENT BEGINS -->
+                <!-- 页面的主内容模块在这里路由 -->
+
                   <router-view/>
+
                 <!-- PAGE CONTENT ENDS -->
               </div><!-- /.col -->
             </div><!-- /.row -->
