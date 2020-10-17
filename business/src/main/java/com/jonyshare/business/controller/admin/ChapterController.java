@@ -1,9 +1,13 @@
 package com.jonyshare.business.controller.admin;
 
+import com.github.pagehelper.Page;
 import com.jonyshare.server.domain.Chapter;
 import com.jonyshare.server.dto.ChapterDto;
+import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.service.ChapterService;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -21,7 +25,8 @@ public class ChapterController {
     private ChapterService chapterService;
 
     @RequestMapping("/list")
-    public List<ChapterDto> list() {
-        return chapterService.list();
+    public PageDto list(@RequestBody PageDto pageDto) {
+        chapterService.list(pageDto);
+        return pageDto;
     }
 }
