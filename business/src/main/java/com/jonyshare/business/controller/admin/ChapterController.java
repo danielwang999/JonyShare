@@ -22,13 +22,16 @@ import java.util.List;
 @RequestMapping("/admin/chapter")
 public class ChapterController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ChapterController.class);
     public static final String BUSINESS_NAME = "大章";
-
 
     @Resource
     private ChapterService chapterService;
 
+    /**
+     * 大章列表查询
+     * @param pageDto
+     * @return
+     */
     @PostMapping("/list")
     public ResponseDto list(@RequestBody PageDto pageDto) {
         chapterService.list(pageDto);
@@ -37,6 +40,11 @@ public class ChapterController {
         return responseDto;
     }
 
+    /**
+     * 大章保存，包括新增和修改
+     * @param chapterDto
+     * @return
+     */
     @PostMapping("/save")
     public ResponseDto save(@RequestBody ChapterDto chapterDto) {
         // 保存校验
@@ -50,6 +58,11 @@ public class ChapterController {
         return responseDto;
     }
 
+    /**
+     * 大章删除
+     * @param id
+     * @return
+     */
     @RequestMapping("/delete/{id}")
     public ResponseDto delete(@PathVariable String id) {
         ResponseDto responseDto = new ResponseDto();

@@ -164,7 +164,6 @@
           size: _this.$refs.pagination.size,
         }).then((response)=>{
           Loading.hide();
-          console.log("查询大章列表结果：", response);
           let resp = response.data;
           _this.chapters = resp.content.list;
           _this.$refs.pagination.render(page, resp.content.total);
@@ -185,7 +184,6 @@
 
         Loading.show();
         _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save', _this.chapter).then((response)=>{
-          console.log("保存大章列表结果：", response);
           let resp = response.data;
           Loading.hide();
           if (resp.success) {
@@ -205,7 +203,6 @@
         Confirm.show("删除大章后不可恢复，确认删除？", function () {
           Loading.show();
           _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/delete/' + id).then((response)=>{
-            console.log("删除大章列表结果：", response);
             let resp = response.data;
             Loading.hide();
             if (resp.success) {

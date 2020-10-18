@@ -28,6 +28,10 @@ public class ChapterService {
     @Resource
     ChapterMapper chapterMapper;
 
+    /**
+     * 大章列表查询服务
+     * @param pageDto
+     */
     public void list(PageDto pageDto) {
         ChapterExample chapterExample = new ChapterExample();
         chapterExample.setOrderByClause("id desc");
@@ -46,6 +50,10 @@ public class ChapterService {
         pageDto.setList(chapterDtoList);
     }
 
+    /**
+     * 大章保存服务，包括新增和修改
+     * @param chapterDto
+     */
     public void save(ChapterDto chapterDto) {
         Chapter chapter = CopyUtil.copy(chapterDto, Chapter.class);
         if (StringUtils.isEmpty(chapterDto.getId())) {
@@ -54,6 +62,11 @@ public class ChapterService {
             this.update(chapter);
         }
     }
+
+    /**
+     * 大章删除
+     * @param id
+     */
     public void delete(String id) {
         chapterMapper.deleteByPrimaryKey(id);
     }
