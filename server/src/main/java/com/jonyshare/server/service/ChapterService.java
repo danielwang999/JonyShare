@@ -54,6 +54,9 @@ public class ChapterService {
             this.update(chapter);
         }
     }
+    public void delete(String id) {
+        chapterMapper.deleteByPrimaryKey(id);
+    }
 
     private void insert(Chapter chapter) {
         chapter.setId(UuidUtil.getShortUuid());
