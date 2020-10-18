@@ -158,10 +158,12 @@
        */
       list(page) {
         let _this = this;
+        Loading.show();
         _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/list', {
           page: page,
           size: _this.$refs.pagination.size,
         }).then((response)=>{
+          Loading.hide();
           console.log("查询大章列表结果：", response);
           let resp = response.data;
           _this.chapters = resp.content.list;
@@ -173,12 +175,15 @@
        */
       save() {
         let _this = this;
+        Loading.show();
         _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save', _this.chapter).then((response)=>{
           console.log("保存大章列表结果：", response);
           let resp = response.data;
+          Loading.hide();
           if (resp.success) {
             $("#form-modal").modal("hide");
             _this.list(1);
+            Toast.success("保存成功!");
           }
         })
       },
@@ -187,13 +192,42 @@
        */
       del(id) {
         let _this = this;
-        _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/delete/' + id).then((response)=>{
-          console.log("删除大章列表结果：", response);
-          let resp = response.data;
-          if (resp.success) {
-            _this.list(1);
-          }
-        })
+        Confirm.show("删除大章后不可恢复，确认删除？", function () {
+          Loading.show();
+          _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/delete/' + id).then((response)=>{
+            console.log("删除大章列表结果：", response);
+            let resp = response.data;
+            Loading.hide();
+            if (resp.success) {
+              _this.list(1);
+              Toast.success("删除成功！");
+            }
+          })
+        });
+
+
+        // Swal.fire({
+        //   title: '确定删除吗？',
+        //   text: '你将无法恢复它！',
+        //   type: 'warning',
+        //   showCancelButton: true,
+        //   confirmButtonColor: '#3085d6',
+        //   cancelButtonColor: '#d33',
+        //   confirmButtonText: '确定删除！',
+        // }).then((result) => {
+        //   if (result.value) {
+        //     Loading.show();
+        //     _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/delete/' + id).then((response)=>{
+        //       console.log("删除大章列表结果：", response);
+        //       let resp = response.data;
+        //       Loading.hide();
+        //       if (resp.success) {
+        //         _this.list(1);
+        //         Toast.success("删除成功！");
+        //       }
+        //     })
+        //   }
+        // })
       },
     }
   }
