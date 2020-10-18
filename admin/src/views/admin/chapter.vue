@@ -35,20 +35,11 @@
         <td>{{chapter.courseId}}</td>
         <td>
           <div class="hidden-sm hidden-xs btn-group">
-            <button class="btn btn-xs btn-success">
-              <i class="ace-icon fa fa-check bigger-120"></i>
-            </button>
-
-            <button class="btn btn-xs btn-info">
+            <button v-on:click="edit(chapter)" class="btn btn-xs btn-info">
               <i class="ace-icon fa fa-pencil bigger-120"></i>
             </button>
-
             <button class="btn btn-xs btn-danger">
               <i class="ace-icon fa fa-trash-o bigger-120"></i>
-            </button>
-
-            <button class="btn btn-xs btn-warning">
-              <i class="ace-icon fa fa-flag bigger-120"></i>
             </button>
           </div>
 
@@ -112,7 +103,6 @@
                 <div class="col-sm-10">
 <!--                  <p class="form-control-static">{{course.name}}</p>-->
                   <input v-model="chapter.courseId" class="form-control" placeholder="课程">
-                  <p class="form-control-static">course.name</p>
                 </div>
               </div>
             </form>
@@ -145,8 +135,22 @@
       _this.list(1);
     },
     methods: {
+      /**
+       *  增加大章
+       */
       add(){
         let _this = this;
+        // 不受编辑框的影响
+        _this.chapter = {};
+        $("#form-modal").modal("show");
+      },
+      /**
+       *  编辑大章
+       */
+      edit(chapter){
+        let _this = this;
+        // 复制chapter，免得影响到表格里面的值
+        _this.chapter = $.extend({}, chapter);
         $("#form-modal").modal("show");
       },
       /**
@@ -163,22 +167,11 @@
           _this.chapters = resp.content.list;
           _this.$refs.pagination.render(page, resp.content.total);
         })
-        // Loading.show();
-        // _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/chapter/list', {
-        //   page: page,
-        //   size: _this.$refs.pagination.size,
-        //   courseId: _this.course.id
-        // }).then((response)=>{
-        //   Loading.hide();
-        //   let resp = response.data;
-        //   _this.chapters = resp.content.list;
-        //   _this.$refs.pagination.render(page, resp.content.total);
-        // })
       },
       /**
        * 点击【保存】
        */
-      save(page) {
+      save() {
         let _this = this;
         _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save', _this.chapter).then((response)=>{
           console.log("保存大章列表结果：", response);
