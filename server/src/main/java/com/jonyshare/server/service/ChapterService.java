@@ -8,6 +8,7 @@ import com.jonyshare.server.domain.ChapterExample;
 import com.jonyshare.server.dto.ChapterDto;
 import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.mapper.ChapterMapper;
+import com.jonyshare.server.util.UuidUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +42,13 @@ public class ChapterService {
             chapterDtoList.add(chapterDto);
         }
         pageDto.setList(chapterDtoList);
+    }
+
+    public ChapterDto save(ChapterDto chapterDto) {
+        chapterDto.setId(UuidUtil.getShortUuid());
+        Chapter chapter = new Chapter();
+        BeanUtils.copyProperties(chapterDto, chapter);
+        chapterMapper.insert(chapter);
+        return chapterDto;
     }
 }

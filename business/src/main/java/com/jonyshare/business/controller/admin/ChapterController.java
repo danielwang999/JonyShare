@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.jonyshare.server.domain.Chapter;
 import com.jonyshare.server.dto.ChapterDto;
 import com.jonyshare.server.dto.PageDto;
+import com.jonyshare.server.dto.ResponseDto;
 import com.jonyshare.server.service.ChapterService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +26,19 @@ public class ChapterController {
     private ChapterService chapterService;
 
     @RequestMapping("/list")
-    public PageDto list(@RequestBody PageDto pageDto) {
+    public ResponseDto list(@RequestBody PageDto pageDto) {
         chapterService.list(pageDto);
-        return pageDto;
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setContent(pageDto);
+        return responseDto;
     }
+
+    @RequestMapping("/save")
+    public ResponseDto save(@RequestBody ChapterDto ChapterDto) {
+        ResponseDto responseDto = new ResponseDto();
+        chapterService.save(ChapterDto);
+        responseDto.setContent(ChapterDto);
+        return responseDto;
+    }
+
 }
