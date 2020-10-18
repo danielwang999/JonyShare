@@ -1,5 +1,7 @@
+// 前端数据校验
 Validator = {
   require: function (value, text) {
+    // Tool为常用判断工具类
     if (Tool.isEmpty(value)) {
       Toast.warning(text + "不能为空");
       return false;
