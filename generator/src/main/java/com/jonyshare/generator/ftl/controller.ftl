@@ -38,12 +38,23 @@ public class ${Domain}Controller {
     }
 
     /**
-     * 大章保存，包括新增和修改
+     * 保存，包括新增和修改
      * @param ${domain}Dto
      * @return
      */
     @PostMapping("/save")
     public ResponseDto save(@RequestBody ${Domain}Dto ${domain}Dto) {
+        // 保存校验
+        <#list fieldList as field>
+        <#if field.name!="id" && field.nameHump!="createdAt" && field.nameHump!="updatedAt" && field.nameHump!="sort">
+        <#if !field.nullAble>
+        ValidatorUtil.require(${domain}Dto.get${field.nameBigHump}(), "${field.nameCn}");
+        </#if>
+        <#if (field.length > 0)>
+        ValidatorUtil.length(${domain}Dto.get${field.nameBigHump}(), "${field.nameCn}", 1, ${field.length?c});
+        </#if>
+        </#if>
+        </#list>
         ResponseDto responseDto = new ResponseDto();
         ${domain}Service.save(${domain}Dto);
         responseDto.setContent(${domain}Dto);
@@ -51,7 +62,7 @@ public class ${Domain}Controller {
     }
 
     /**
-     * 大章删除
+     * 删除
      * @param id
      * @return
      */

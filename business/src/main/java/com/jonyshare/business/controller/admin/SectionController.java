@@ -38,12 +38,16 @@ public class SectionController {
     }
 
     /**
-     * 大章保存，包括新增和修改
+     * 保存，包括新增和修改
      * @param sectionDto
      * @return
      */
     @PostMapping("/save")
     public ResponseDto save(@RequestBody SectionDto sectionDto) {
+        // 保存校验
+        ValidatorUtil.require(sectionDto.getTitle(), "标题");
+        ValidatorUtil.length(sectionDto.getTitle(), "标题", 1, 50);
+        ValidatorUtil.length(sectionDto.getVideo(), "视频", 1, 200);
         ResponseDto responseDto = new ResponseDto();
         sectionService.save(sectionDto);
         responseDto.setContent(sectionDto);
@@ -51,7 +55,7 @@ public class SectionController {
     }
 
     /**
-     * 大章删除
+     * 删除
      * @param id
      * @return
      */

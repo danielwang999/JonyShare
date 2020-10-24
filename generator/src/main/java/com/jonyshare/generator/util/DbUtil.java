@@ -65,7 +65,7 @@ public class DbUtil {
                 String columnName = rs.getString("Field");
                 String type = rs.getString("Type");
                 String comment = rs.getString("Comment");
-                String nullAble = rs.getString("Null"); //YES NO
+                String nullAble = rs.getString("Null"); //YES / NO
                 Field field = new Field();
                 field.setName(columnName);
                 field.setNameHump(lineToHump(columnName));
@@ -78,13 +78,16 @@ public class DbUtil {
                 } else {
                     field.setNameCn(comment);
                 }
+
                 field.setNullAble("YES".equals(nullAble));
+                // char类型一般是固定长度的，id一般不用校验，其他的一般会有下拉框等其他的限制
                 if (type.toUpperCase().contains("varchar".toUpperCase())) {
                     String lengthStr = type.substring(type.indexOf("(") + 1, type.length() - 1);
                     field.setLength(Integer.valueOf(lengthStr));
                 } else {
                     field.setLength(0);
                 }
+                // 处理枚举类型
                 if (comment.contains("枚举")) {
 //                    field.setEnums(true);
 //
