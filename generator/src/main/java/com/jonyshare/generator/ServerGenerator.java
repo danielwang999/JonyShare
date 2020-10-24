@@ -1,4 +1,4 @@
-package com.jonyshare.generator.server;
+package com.jonyshare.generator;
 
 
 import com.jonyshare.generator.util.DbUtil;
