@@ -84,6 +84,14 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- 读取xml文件需要的依赖 -->
+            <dependency>
+                <groupId>dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>1.6.1</version>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 
