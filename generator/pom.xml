@@ -23,10 +23,15 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-
+        <!-- 集成dom4j，用于解析xml的 -->
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
+        </dependency>
+        <!-- 引入server工共模块 -->
+        <dependency>
+            <groupId>com.jonyshare</groupId>
+            <artifactId>server</artifactId>
         </dependency>
     </dependencies>
 
