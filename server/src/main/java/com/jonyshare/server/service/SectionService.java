@@ -6,6 +6,7 @@ import com.jonyshare.server.domain.Section;
 import com.jonyshare.server.domain.SectionExample;
 import com.jonyshare.server.dto.SectionDto;
 import com.jonyshare.server.dto.PageDto;
+import com.jonyshare.server.enums.SectionChargeEnum;
 import com.jonyshare.server.mapper.SectionMapper;
 import com.jonyshare.server.util.CopyUtil;
 import com.jonyshare.server.util.UuidUtil;
@@ -56,6 +57,7 @@ public class SectionService {
         section.setCreatedAt(now);
         section.setUpdatedAt(now);
         section.setId(UuidUtil.getShortUuid());
+        section.setCharge(SectionChargeEnum.FREE.getCode());
         sectionMapper.insert(section);
     }
 
