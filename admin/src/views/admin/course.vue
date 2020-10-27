@@ -12,8 +12,6 @@
       </button>
     </p>
 
-    <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
-
     <div class="row">
       <div v-for="course in courses" class="col-md-3">
         <div class="thumbnail search-thumbnail">
@@ -148,6 +146,9 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <!--分页组件-->
+    <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
   </div>
 </template>
 

@@ -6,6 +6,7 @@ import com.jonyshare.server.domain.Section;
 import com.jonyshare.server.domain.SectionExample;
 import com.jonyshare.server.dto.SectionDto;
 import com.jonyshare.server.dto.PageDto;
+import com.jonyshare.server.dto.SectionPageDto;
 import com.jonyshare.server.enums.SectionChargeEnum;
 import com.jonyshare.server.mapper.SectionMapper;
 import com.jonyshare.server.util.CopyUtil;
@@ -26,9 +27,18 @@ public class SectionService {
     /**
      * 列表查询
      */
-    public void list(PageDto pageDto) {
+    public void list(SectionPageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
         SectionExample sectionExample = new SectionExample();
+
+        SectionExample.Criteria criteria = sectionExample.createCriteria();
+        if (!StringUtils.isEmpty(pageDto.getCourseId())) {
+            criteria.andCourseIdEqualTo(pageDto.getCourseId());
+        }
+        if (!StringUtils.isEmpty(pageDto.getChapterId())) {
+            criteria.andChapterIdEqualTo(pageDto.getChapterId());
+        }
+
         sectionExample.setOrderByClause("sort asc");
         List<Section> sectionList = sectionMapper.selectByExample(sectionExample);
         PageInfo<Section> pageInfo = new PageInfo<>(sectionList);

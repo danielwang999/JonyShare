@@ -5,6 +5,7 @@ import com.jonyshare.server.domain.Section;
 import com.jonyshare.server.dto.SectionDto;
 import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.dto.ResponseDto;
+import com.jonyshare.server.dto.SectionPageDto;
 import com.jonyshare.server.service.SectionService;
 import com.jonyshare.server.util.ValidatorUtil;
 import org.slf4j.Logger;
@@ -17,7 +18,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/section")
-public class SectionController {
+public class
+SectionController {
 
     public static final String BUSINESS_NAME = "小节";
 
@@ -30,7 +32,9 @@ public class SectionController {
      * @return
      */
     @PostMapping("/list")
-    public ResponseDto list(@RequestBody PageDto pageDto) {
+    public ResponseDto list(@RequestBody SectionPageDto pageDto) {
+        ValidatorUtil.require(pageDto.getCourseId(), "课程ID");
+        ValidatorUtil.require(pageDto.getChapterId(), "大章ID");
         sectionService.list(pageDto);
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(pageDto);
