@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.jonyshare.server.domain.Chapter;
 import com.jonyshare.server.domain.ChapterExample;
 import com.jonyshare.server.dto.ChapterDto;
+import com.jonyshare.server.dto.ChapterPageDto;
 import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.mapper.ChapterMapper;
 import com.jonyshare.server.util.CopyUtil;
@@ -32,21 +33,20 @@ public class ChapterService {
      * 大章列表查询服务
      * @param pageDto
      */
-    public void list(PageDto pageDto) {
-        ChapterExample chapterExample = new ChapterExample();
-        chapterExample.setOrderByClause("id desc");
+    public void list(ChapterPageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize()); //要查第几页和每页的条数
+        ChapterExample chapterExample = new ChapterExample();
+
+        ChapterExample.Criteria criteria = chapterExample.createCriteria();
+        if (!StringUtils.isEmpty(pageDto.getCourseId())) {
+            criteria.andCourseIdEqualTo(pageDto.getCourseId());
+        }
+
         List<Chapter> chapterList = chapterMapper.selectByExample(chapterExample);
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
         pageDto.setTotal(pageInfo.getTotal());
 
-        List<ChapterDto> chapterDtoList = new ArrayList<>();
-        for (int i = 0, l = chapterList.size(); i < l; i++) {
-            Chapter chapter = chapterList.get(i);
-            ChapterDto chapterDto = new ChapterDto();
-            BeanUtils.copyProperties(chapter, chapterDto);
-            chapterDtoList.add(chapterDto);
-        }
+        List<ChapterDto> chapterDtoList = CopyUtil.copyList(chapterList, ChapterDto.class);
         pageDto.setList(chapterDtoList);
     }
 

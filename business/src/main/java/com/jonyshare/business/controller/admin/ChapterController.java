@@ -3,6 +3,7 @@ package com.jonyshare.business.controller.admin;
 import com.github.pagehelper.Page;
 import com.jonyshare.server.domain.Chapter;
 import com.jonyshare.server.dto.ChapterDto;
+import com.jonyshare.server.dto.ChapterPageDto;
 import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.dto.ResponseDto;
 import com.jonyshare.server.service.ChapterService;
@@ -33,7 +34,8 @@ public class ChapterController {
      * @return
      */
     @PostMapping("/list")
-    public ResponseDto list(@RequestBody PageDto pageDto) {
+    public ResponseDto list(@RequestBody ChapterPageDto pageDto) {
+        ValidatorUtil.require(pageDto.getCourseId(), "课程ID");
         chapterService.list(pageDto);
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(pageDto);

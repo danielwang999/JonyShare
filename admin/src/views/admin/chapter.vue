@@ -1,6 +1,17 @@
 <template>
   <div>
+    <h4 class="lighter">
+      <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+      <router-link to="/business/course" class="pink"> {{course.name}} </router-link>
+    </h4>
+    <hr>
+
     <p>
+      <router-link to="/business/course" class="btn btn-white btn-default btn-round">
+        <i class="ace-icon fa fa-arrow-left"></i>
+        返回课程
+      </router-link>
+      &nbsp;
       <button v-on:click="add()" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-edit"></i>
         新增
@@ -11,8 +22,6 @@
         刷新
       </button>
     </p>
-    <!--  分页组件  -->
-    <pagination ref="pagination" v-bind:list="list"></pagination>
 
     <table id="simple-table" class="table  table-bordered table-hover">
       <thead>
@@ -23,7 +32,6 @@
         <th>课程ID</th>
         <th>操作</th>
 
-        <th></th>
       </tr>
       </thead>
 
@@ -52,25 +60,25 @@
               <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
                 <li>
                   <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
-																			<span class="blue">
-																				<i class="ace-icon fa fa-search-plus bigger-120"></i>
-																			</span>
+                    <span class="blue">
+                      <i class="ace-icon fa fa-search-plus bigger-120"></i>
+                    </span>
                   </a>
                 </li>
 
                 <li>
                   <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
-																			<span class="green">
-																				<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-																			</span>
+                    <span class="green">
+                      <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+                    </span>
                   </a>
                 </li>
 
                 <li>
                   <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
-																			<span class="red">
-																				<i class="ace-icon fa fa-trash-o bigger-120"></i>
-																			</span>
+                    <span class="red">
+                      <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -101,8 +109,7 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">课程</label>
                 <div class="col-sm-10">
-<!--                  <p class="form-control-static">{{course.name}}</p>-->
-                  <input v-model="chapter.courseId" class="form-control" placeholder="课程">
+                  <p class="form-control-static">{{course.name}}</p>
                 </div>
               </div>
             </form>
@@ -114,6 +121,9 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <!--  分页组件  -->
+    <pagination ref="pagination" v-bind:list="list" style=""></pagination>
   </div>
 </template>
 
@@ -125,13 +135,20 @@
     data: function() {
       return {
         chapter: {},
-        chapters: []
+        chapters: [],
+        course: {},
       }
     },
     mounted: function() {
       // sidebar激活样式方法一
       // this.$parent.activeSidebar("business-chapter-sidebar");
       let _this = this;
+      let course = SessionStorage.get(SESSION_KEY_COURSE) || {};
+      if (Tool.isEmpty(course)) {
+        // 如果直接访问大章页面，将其跳转回welcome页面
+        _this.$router.push("/welcome");
+      }
+      _this.course = course;
       _this.list(1);
     },
     methods: {
@@ -162,6 +179,7 @@
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/chapter/list', {
           page: page,
           size: _this.$refs.pagination.size,
+          courseId: _this.course.id,
         }).then((response)=>{
           Loading.hide();
           let resp = response.data;
@@ -177,10 +195,10 @@
 
         // 保存校验
         if (!Validator.require(_this.chapter.name, "名称")
-          || !Validator.require(_this.chapter.courseId, "课程ID")
           || !Validator.length(_this.chapter.courseId, "课程ID", 1, 8)) {
           return;
         }
+        _this.chapter.courseId = this.course.id;
 
         Loading.show();
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/chapter/save', _this.chapter).then((response)=>{
