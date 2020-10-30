@@ -20,6 +20,17 @@ public class CategoryController {
     private CategoryService categoryService;
 
     /**
+     * 查询所有分类，因为分类一般不会很多，所以就没必要分页了
+     * @return
+     */
+    @PostMapping("/all")
+    public ResponseDto all() {
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setContent(categoryService.all());
+        return responseDto;
+    }
+
+    /**
      * 列表查询
      * @param pageDto
      * @return
