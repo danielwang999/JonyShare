@@ -1,19 +1,13 @@
 package com.jonyshare.business.controller.admin;
 
-import com.github.pagehelper.Page;
-import com.jonyshare.server.domain.Section;
-import com.jonyshare.server.dto.SectionDto;
-import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.dto.ResponseDto;
+import com.jonyshare.server.dto.SectionDto;
 import com.jonyshare.server.dto.SectionPageDto;
 import com.jonyshare.server.service.SectionService;
 import com.jonyshare.server.util.ValidatorUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 
 @RestController

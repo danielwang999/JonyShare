@@ -11,6 +11,7 @@ import com.jonyshare.server.mapper.SectionMapper;
 import com.jonyshare.server.util.CopyUtil;
 import com.jonyshare.server.util.UuidUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -51,7 +52,13 @@ public class SectionService {
 
     /**
      * 保存，id有值时更新，无值时新增
+     * 默认情况下，@Transactional事务遇到Exception异常不会回滚，遇到RuntimeException异常回回滚
+     * 可以使用Transactional(rollbackFor = Exception.class) 来设置遇到Exception回滚。
+     *
+     * 同一个类内部方法互相调用，methodA调用methodB，methodB事务不起作用，Spring的事务处理是利用AOP
+     * 生成动态代理类，内部方法调用时不经过代理类，所以事务不生效。
      */
+    @Transactional()
     public void save(SectionDto sectionDto) {
         Section section = CopyUtil.copy(sectionDto, Section.class);
         if (StringUtils.isEmpty(sectionDto.getId())) {
