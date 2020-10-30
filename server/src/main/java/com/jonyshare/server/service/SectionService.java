@@ -5,7 +5,6 @@ import com.github.pagehelper.PageInfo;
 import com.jonyshare.server.domain.Section;
 import com.jonyshare.server.domain.SectionExample;
 import com.jonyshare.server.dto.SectionDto;
-import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.dto.SectionPageDto;
 import com.jonyshare.server.enums.SectionChargeEnum;
 import com.jonyshare.server.mapper.SectionMapper;
@@ -15,14 +14,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class SectionService {
 
     @Resource
     private SectionMapper sectionMapper;
+
+    @Resource
+    private CourseService courseService;
 
     /**
      * 列表查询
@@ -57,6 +59,7 @@ public class SectionService {
         } else {
             this.update(section);
         }
+        courseService.updateTime(section.getCourseId());
     }
 
     /**
