@@ -1,14 +1,12 @@
 package com.jonyshare.business.controller.admin;
 
-import com.github.pagehelper.Page;
-import com.jonyshare.server.domain.Course;
+import com.jonyshare.server.dto.CourseCategoryDto;
 import com.jonyshare.server.dto.CourseDto;
 import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.dto.ResponseDto;
+import com.jonyshare.server.service.CourseCategoryService;
 import com.jonyshare.server.service.CourseService;
 import com.jonyshare.server.util.ValidatorUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,6 +21,8 @@ public class CourseController {
 
     @Resource
     private CourseService courseService;
+    @Resource
+    private CourseCategoryService courseCategoryService;
 
     /**
      * 列表查询
@@ -64,6 +64,19 @@ public class CourseController {
     public ResponseDto delete(@PathVariable String id) {
         ResponseDto responseDto = new ResponseDto();
         courseService.delete(id);
+        return responseDto;
+    }
+
+    /**
+     * 查找课程下所有分类
+     * @param courseId
+     * @return
+     */
+    @PostMapping("/list-category/{courseId}")
+    public ResponseDto listCategory(@PathVariable String courseId) {
+        ResponseDto responseDto = new ResponseDto();
+        List<CourseCategoryDto> dtoList = courseCategoryService.listByCourse(courseId);
+        responseDto.setContent(dtoList);
         return responseDto;
     }
 

@@ -117,7 +117,14 @@ insert into `category` (id, parent, name, sort) values ('00000701', '00000700', 
 insert into `category` (id, parent, name, sort) values ('00000702', '00000700', 'redis', 702);
 insert into `category` (id, parent, name, sort) values ('00000703', '00000700', 'mongodb', 703);
 
-
+# 课程分类
+drop table if exists `course_category`;
+create table `course_category` (
+   `id` char(8) not null default '' comment 'id',
+   `course_id` char(8) comment '课程|course.id',
+   `category_id` char(8) comment '分类|course.id',
+   primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='课程分类';
 
 -- 对test表测试的脚本
 drop table if exists 'test';
