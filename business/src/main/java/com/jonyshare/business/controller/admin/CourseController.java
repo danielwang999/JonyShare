@@ -1,9 +1,6 @@
 package com.jonyshare.business.controller.admin;
 
-import com.jonyshare.server.dto.CourseCategoryDto;
-import com.jonyshare.server.dto.CourseDto;
-import com.jonyshare.server.dto.PageDto;
-import com.jonyshare.server.dto.ResponseDto;
+import com.jonyshare.server.dto.*;
 import com.jonyshare.server.service.CourseCategoryService;
 import com.jonyshare.server.service.CourseService;
 import com.jonyshare.server.util.ValidatorUtil;
@@ -77,6 +74,31 @@ public class CourseController {
         ResponseDto responseDto = new ResponseDto();
         List<CourseCategoryDto> dtoList = courseCategoryService.listByCourse(courseId);
         responseDto.setContent(dtoList);
+        return responseDto;
+    }
+
+    /**
+     * 查找课程简介内容
+     * @param courseId
+     * @return
+     */
+    @GetMapping("/find-content/{courseId}")
+    public ResponseDto findContent(@PathVariable String courseId) {
+        ResponseDto responseDto = new ResponseDto();
+        CourseContentDto courseContentDto = courseService.findContent(courseId);
+        responseDto.setContent(courseContentDto);
+        return responseDto;
+    }
+
+    /**
+     * 保存课程简介内容，包括新增和更新
+     * @param courseContentDto
+     * @return
+     */
+    @PostMapping("/save-content")
+    public ResponseDto saveContent(CourseContentDto courseContentDto) {
+        ResponseDto responseDto = new ResponseDto();
+        courseService.saveCourseContent(courseContentDto);
         return responseDto;
     }
 

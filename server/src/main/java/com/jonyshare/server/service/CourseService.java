@@ -3,9 +3,12 @@ package com.jonyshare.server.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jonyshare.server.domain.Course;
+import com.jonyshare.server.domain.CourseContent;
 import com.jonyshare.server.domain.CourseExample;
+import com.jonyshare.server.dto.CourseContentDto;
 import com.jonyshare.server.dto.CourseDto;
 import com.jonyshare.server.dto.PageDto;
+import com.jonyshare.server.mapper.CourseContentMapper;
 import com.jonyshare.server.mapper.CourseMapper;
 import com.jonyshare.server.mapper.my.MyCourseMapper;
 import com.jonyshare.server.util.CopyUtil;
@@ -29,7 +32,10 @@ public class CourseService {
     @Resource
     private MyCourseMapper myCourseMapper;
     @Resource
+    private CourseContentMapper courseContentMapper;
+    @Resource
     private CourseCategoryService courseCategoryService;
+
 
     /**
      * 列表查询
@@ -90,5 +96,33 @@ public class CourseService {
     public void updateTime(String courseId) {
         LOG.info("更新课程时长：{}", courseId);
         myCourseMapper.updateTime(courseId);
+    }
+
+    /**
+     * 查找课程介绍内容
+     * @param courseId
+     * @return
+     */
+    public CourseContentDto findContent(String courseId) {
+        CourseContent courseContent = courseContentMapper.selectByPrimaryKey(courseId);
+        if (courseContent == null) {
+            return null;
+        }
+        return CopyUtil.copy(courseContent, CourseContentDto.class);
+    }
+
+    /**
+     * 保存课程内容，包含新增和修改
+     * @param courseContentDto
+     * @return
+     */
+    public int saveCourseContent (CourseContentDto courseContentDto) {
+        CourseContent courseContent = CopyUtil.copy(courseContentDto, CourseContent.class);
+        int i = courseContentMapper.updateByPrimaryKeyWithBLOBs(courseContent);
+        // 如果发现更新到的行数为0，在选择插入
+        if (i == 0) {
+            i = courseContentMapper.insert(courseContent);
+        }
+        return i;
     }
 }
