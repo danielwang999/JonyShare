@@ -155,7 +155,7 @@
 
       _this.list(1);
       // sidebar激活样式方法一
-      // this.$parent.activeSidebar("business-section-sidebar");
+      this.$parent.activeSidebar("business-course-sidebar");
     },
     methods: {
       /**
