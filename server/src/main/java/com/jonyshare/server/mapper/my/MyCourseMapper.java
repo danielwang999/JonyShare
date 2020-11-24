@@ -1,5 +1,6 @@
 package com.jonyshare.server.mapper.my;
 
+import com.jonyshare.server.dto.SortDto;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -8,4 +9,10 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface MyCourseMapper {
     int  updateTime(@Param("courseId") String courseId);
+
+    void updateSort(SortDto sortDto);
+
+    void moveSortsForward(SortDto sortDto);
+
+    void moveSortsBackward(SortDto sortDto);
 }

@@ -102,4 +102,16 @@ public class CourseController {
         return responseDto;
     }
 
+    /**
+     * 课程排序顺序的更改
+     * @param sortDto
+     * @return
+     */
+    @RequestMapping("/sort")
+    public ResponseDto sort(@RequestBody SortDto sortDto) {
+        ResponseDto responseDto = new ResponseDto();
+        courseService.sort(sortDto);
+        return responseDto;
+    }
+
 }
