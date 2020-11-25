@@ -36,6 +36,16 @@
               <a href="#" class="blue">{{course.name}}</a>
             </h3>
 
+            <div v-for="teacher in teachers.filter(t=>{return t.id===course.teacherId})" class="profile-activity clearfix">
+              <div>
+                <img v-show="!teacher.image" class="pull-left" src="/ace/assets/images/avatars/avatar5.png">
+                <img v-show="teacher.image" class="pull-left" v-bind:src="teacher.image">
+                <a class="user" href="#"> {{teacher.name}} </a>
+                <br>
+                {{teacher.position}}
+              </div>
+            </div>
+
             <p>
               <span class="blue bolder bigger-150">{{course.price}}&nbsp;<i class="fa fa-rmb"></i></span>&nbsp;
             </p>
