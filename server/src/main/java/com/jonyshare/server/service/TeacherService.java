@@ -22,6 +22,17 @@ public class TeacherService {
     private TeacherMapper teacherMapper;
 
     /**
+     * 查找所有老师
+     * @return
+     */
+    public List<TeacherDto> all() {
+        TeacherExample teacherExample = new TeacherExample();
+        List<Teacher> teacherList = teacherMapper.selectByExample(teacherExample);
+        List<TeacherDto> teacherDtoList = CopyUtil.copyList(teacherList, TeacherDto.class);
+        return teacherDtoList;
+    }
+
+    /**
      * 列表查询
      */
     public void list(PageDto pageDto) {
@@ -67,4 +78,6 @@ public class TeacherService {
     public void delete(String id) {
         teacherMapper.deleteByPrimaryKey(id);
     }
+
+
 }

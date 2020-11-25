@@ -19,6 +19,8 @@ create table course (
     primary key (id)
 ) engine=innodb default charset=utf8mb4 comment='课程';
 
+alter table `course` add column (`teacher_id` char(8) comment '讲师|teacher.id');
+
 insert into course (id, name, summary, time, price, image, level, charge, status, enroll, sort, created_at, updated_at)
 values ('00000001', '测试课程01', '这是一门测试课程', 7200, 19.9, '', 1, 'C', 'P', 100, 0, now(), now());
 

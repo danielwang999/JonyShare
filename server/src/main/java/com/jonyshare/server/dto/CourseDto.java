@@ -75,8 +75,15 @@ public class CourseDto {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedAt;
 
+    /**
+     * 此课程所属的分类
+     */
     private List<CategoryDto> categorys;
 
+    /**
+     * 此课程的teacherId
+     */
+    private String teacherId;
 
     public String getId() {
         return id;
@@ -190,6 +197,13 @@ public class CourseDto {
         this.categorys = categorys;
     }
 
+    public String getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(String teacherId) {
+        this.teacherId = teacherId;
+    }
 
     @Override
     public String toString() {
@@ -208,6 +222,7 @@ public class CourseDto {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", categorys=" + categorys +
+                ", teacherId='" + teacherId + '\'' +
                 '}';
     }
 }

@@ -20,6 +20,18 @@ public class TeacherController {
     private TeacherService teacherService;
 
     /**
+     * 查询所有的teacher
+     * @return
+     */
+    @PostMapping("/all")
+    public ResponseDto all() {
+
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setContent(teacherService.all());
+        return responseDto;
+    }
+
+    /**
      * 列表查询
      * @param pageDto
      * @return
