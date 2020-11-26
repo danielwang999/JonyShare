@@ -86,6 +86,11 @@
                 <label class="col-sm-2 control-label">头像</label>
                 <div class="col-sm-10">
                   <input type="file" v-on:change="uploadImage()" id="file-upload-input">
+                  <div v-show="teacher.image" class="row">
+                    <div class="col-md-4">
+                      <img v-bind:src="teacher.image" class="img-responsive">
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="form-group">
@@ -236,6 +241,8 @@
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/upload', formData).then((response) =>{
           Loading.hide();
           let resp = response.data;
+          let image = resp.content;
+          _this.teacher.image = image;
         });
       }
     }

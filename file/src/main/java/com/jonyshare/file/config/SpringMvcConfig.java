@@ -1,5 +1,6 @@
 package com.jonyshare.file.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -11,9 +12,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class SpringMvcConfig implements WebMvcConfigurer {
 
-    // localhost:9003/file/f/cpfJ8lLC-aaa.png
+    @Value("${file.path}")
+    private String FILE_PATH;
+
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/f/**").addResourceLocations("file:F:/1OldE/JONYJAVA_UPLOAD_FILES/");
+        // localhost:9003/file/f/teacher/cpfJ8lLC-aaa.png
+        registry.addResourceHandler("/f/**").addResourceLocations("file:" + FILE_PATH);
     }
 }
