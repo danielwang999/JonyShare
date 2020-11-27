@@ -96,7 +96,7 @@ public class CourseController {
      * @return
      */
     @PostMapping("/save-content")
-    public ResponseDto saveContent(CourseContentDto courseContentDto) {
+    public ResponseDto saveContent(@RequestBody CourseContentDto courseContentDto) {
         ResponseDto responseDto = new ResponseDto();
         courseService.saveCourseContent(courseContentDto);
         return responseDto;
