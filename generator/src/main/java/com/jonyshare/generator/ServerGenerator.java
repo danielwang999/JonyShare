@@ -4,19 +4,19 @@ package com.jonyshare.generator;
 import com.jonyshare.generator.util.DbUtil;
 import com.jonyshare.generator.util.Field;
 import com.jonyshare.generator.util.FreemarkerUtil;
-
-import java.io.File;
-import java.util.*;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+
+import java.io.File;
+import java.util.*;
 
 /**
  * @author WangQiang
  * @date 2020/10/22-16:20
  */
 public class ServerGenerator {
-    static String MODULE = "business";
+    static String MODULE = "file";
     static String toServicePath = "server\\src\\main\\java\\com\\jonyshare\\server\\service\\";
     static String toDtoPath = "server\\src\\main\\java\\com\\jonyshare\\server\\dto\\";
     static String toControllerPath = MODULE + "\\src\\main\\java\\com\\jonyshare\\" + MODULE + "\\controller\\admin\\";
