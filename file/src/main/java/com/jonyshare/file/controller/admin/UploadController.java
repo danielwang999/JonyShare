@@ -3,6 +3,7 @@ package com.jonyshare.file.controller.admin;
 
 import com.jonyshare.server.dto.FileDto;
 import com.jonyshare.server.dto.ResponseDto;
+import com.jonyshare.server.enums.FileUseEnum;
 import com.jonyshare.server.service.FileService;
 import com.jonyshare.server.util.UuidUtil;
 import org.slf4j.Logger;
@@ -37,15 +38,24 @@ public class UploadController {
     private FileService fileService;
 
     @RequestMapping("/upload")
-    public ResponseDto upload(@RequestParam MultipartFile file) throws IOException {
-        LOG.info("上传文件开始：{}",file);
+    public ResponseDto upload(@RequestParam MultipartFile file, String use) throws IOException {
+        LOG.info("上传文件开始：{}");
         LOG.info(file.getOriginalFilename());
         LOG.info(String.valueOf(file.getSize()));
 
         String fileName = file.getOriginalFilename();
         String key = UuidUtil.getShortUuid();
         String suffix = fileName.substring(fileName.indexOf(".") + 1).toLowerCase();
-        String path = "teacher/" + key + "." + suffix;
+
+        // 获得文件使用类型枚举，若分类文件夹不存在，为其创建
+        FileUseEnum fileUseEnum = FileUseEnum.getByCode(use);
+        String dir = fileUseEnum.name().toLowerCase();
+        File fullDir = new File(FILE_PATH + dir);
+        if (!fullDir.exists()) {
+            fullDir.mkdir();
+        }
+
+        String path = dir + File.separator + key + "." + suffix;
         String fullPath = FILE_PATH + path;
         File dest = new File(fullPath);
         file.transferTo(dest);
@@ -57,7 +67,7 @@ public class UploadController {
         fileDto.setName(fileName);
         fileDto.setSize(Math.toIntExact(file.getSize()));
         fileDto.setSuffix(suffix);
-        fileDto.setUse("");
+        fileDto.setUse(use);
         fileService.save(fileDto);
 
         ResponseDto responseDto = new ResponseDto();

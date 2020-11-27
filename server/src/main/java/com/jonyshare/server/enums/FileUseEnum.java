@@ -30,6 +30,11 @@ public enum FileUseEnum {
         return desc;
     }
 
+    /**
+     * 根据code得到enum枚举类型
+     * @param code
+     * @return
+     */
     public static FileUseEnum getByCode(String code){
         for(FileUseEnum e: FileUseEnum.values()){
             if(code.equals(e.getCode())){

@@ -21,8 +21,11 @@
       inputId: {
         default: "file-upload"
       },
-      suffixs: {
+      suffixes: {
         default: []
+      },
+      use: {
+        default: ""
       },
       afterUpload: {
         type: Function,
@@ -43,24 +46,25 @@
         let file = _this.$refs.file.files[0];
 
         // 文件上传格式的校验判断
-        let suffixs = _this.suffixs;
+        let suffixes = _this.suffixes;
         let fileName = file.name;
         let suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length).toLowerCase();
         let validateSuffix = false;
-        for (let i = 0; i < suffixs.length; i++) {
-          if (suffixs[i].toLowerCase() === suffix) {
+        for (let i = 0; i < suffixes.length; i++) {
+          if (suffixes[i].toLowerCase() === suffix) {
             validateSuffix = true;
             break;
           }
         }
         if(!validateSuffix) {
-          Toast.warning("文件格式不正确！只支持上传：" + suffixs.join(","));
+          Toast.warning("文件格式不正确！只支持上传：" + suffixes.join(","));
           // 清空组件里面的东西，防止下次若上传一样的文件时，无法触发v-on:change="uploadFile()"
           $("#" + _this.inputId + "-input").val("");
           return;
         }
 
         formData.append('file', file);
+        formData.append('use', _this.use);
         Loading.show();
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/upload', formData).then((response) =>{
           Loading.hide();

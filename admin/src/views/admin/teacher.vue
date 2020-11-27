@@ -85,10 +85,11 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">头像</label>
                 <div class="col-sm-10">
-                  <file v-bind:text="'上传头像2'"
+                  <file v-bind:text="'上传头像'"
                         v-bind:after-upload="afterUpload"
                         v-bind:input-id="'image-upload'"
-                        v-bind:suffixs="['jpg', 'jpeg', 'png']"></file>
+                        v-bind:use="FILE_USE.TEACHER.key"
+                        v-bind:suffixes="['jpg', 'jpeg', 'png']"></file>
                 </div>
                 <div v-show="teacher.image" class="row">
                   <div class="col-md-4">
@@ -136,6 +137,7 @@
       return {
         teacher: {},
         teachers: [],
+        FILE_USE: FILE_USE, // 左边是组件内的变量，右边是js全局变量，在html里面用的变量应该是组件内的变量，读不到全局
       }
     },
     mounted: function() {
