@@ -129,8 +129,18 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">封面</label>
                 <div class="col-sm-10">
-                  <input v-model="course.image" class="form-control">
+                  <file v-bind:text="'上传封面'"
+                        v-bind:after-upload="afterUpload"
+                        v-bind:input-id="'image-upload'"
+                        v-bind:use="FILE_USE.COURSE.key"
+                        v-bind:suffixes="['jpg', 'jpeg', 'png']"></file>
+                  <div v-show="course.image" class="row">
+                    <div class="col-md-6">
+                      <img v-bind:src="course.image" class="img-responsive">
+                    </div>
+                  </div>
                 </div>
+
               </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label">级别</label>
@@ -226,8 +236,9 @@
 
 <script>
   import Pagination from "../../components/pagination";
+  import File from "../../components/file";
   export default {
-    components: {Pagination},
+    components: {Pagination, File},
     name: "business-course",
     data: function() {
       return {
@@ -236,6 +247,7 @@
         COURSE_LEVEL: COURSE_LEVEL,
         COURSE_CHARGE: COURSE_CHARGE,
         COURSE_STATUS: COURSE_STATUS,
+        FILE_USE: FILE_USE,
         categorys: {},
         tree: {},
         sort: {
@@ -474,6 +486,16 @@
           _this.teachers = resp.content;
         })
       },
+
+      /**
+       * 用组件上传文件(封面)后的回调函数
+       * @param resp
+       */
+      afterUpload(resp) {
+        let _this = this;
+        let image = resp.content.path;
+        _this.course.image = image;
+      }
     }
   }
 </script>

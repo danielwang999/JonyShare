@@ -88,7 +88,16 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">视频</label>
                 <div class="col-sm-10">
-                  <input v-model="section.video" class="form-control">
+                  <file v-bind:text="'上传视频'"
+                        v-bind:after-upload="afterUpload"
+                        v-bind:input-id="'video-upload'"
+                        v-bind:use="FILE_USE.COURSE.key"
+                        v-bind:suffixes="['mp4']"></file>
+                  <div v-show="section.video" class="row">
+                    <div class="col-md-10">
+                      <video v-bind:src="section.video" id="video" controls="controls"></video>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="form-group">
@@ -129,14 +138,16 @@
 
 <script>
   import Pagination from "../../components/pagination";
+  import File from "../../components/file";
   export default {
-    components: {Pagination},
+    components: {Pagination, File},
     name: "business-section",
     data: function() {
       return {
         section: {},
         sections: [],
         SECTION_CHARGE: SECTION_CHARGE,
+        FILE_USE: FILE_USE,
         course: {},
         chapter: {},
       }
@@ -243,7 +254,37 @@
             }
           })
         });
-      }
+      },
+
+      /**
+       * 用组件上传文件(视频)后的回调函数
+       * @param resp
+       */
+      afterUpload(resp) {
+        let _this = this;
+        let video = resp.content.path;
+        _this.section.video = video;
+        _this.getTime();
+      },
+
+      /**
+       * 获取视频时长
+       */
+      getTime() {
+        let _this = this;
+        setTimeout(function () {
+          let ele = document.getElementById("video");
+          _this.section.time = parseInt(ele.duration, 10);
+        }, 1000);
+      },
     }
   }
 </script>
+
+<style scoped>
+  video {
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+  }
+</style>

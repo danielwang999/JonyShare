@@ -90,12 +90,13 @@
                         v-bind:input-id="'image-upload'"
                         v-bind:use="FILE_USE.TEACHER.key"
                         v-bind:suffixes="['jpg', 'jpeg', 'png']"></file>
-                </div>
-                <div v-show="teacher.image" class="row">
-                  <div class="col-md-4">
-                    <img v-bind:src="teacher.image" class="img-responsive">
+                  <div v-show="teacher.image" class="row">
+                    <div class="col-md-4">
+                      <img v-bind:src="teacher.image" class="img-responsive">
+                    </div>
                   </div>
                 </div>
+
               </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label">职位</label>
