@@ -479,7 +479,7 @@
               <li class="active" id="file-file-sidebar">
                 <router-link to="/file/file" class="dropdown-toggle">
                   <i class="menu-icon fa fa-caret-right"></i>
-                  文件管理
+                  文件列表
                   <b class="arrow fa fa-angle-down"></b>
                 </router-link>
               </li>
