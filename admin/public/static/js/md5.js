@@ -1,3 +1,7 @@
+/**
+ * MD5工具类
+ */
+
 var KEY = "!@#QWERT";
 /*
  * Configurable variables. You may need to tweak these to be compatible with

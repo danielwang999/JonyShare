@@ -5,7 +5,6 @@ import com.jonyshare.server.dto.FileDto;
 import com.jonyshare.server.dto.ResponseDto;
 import com.jonyshare.server.enums.FileUseEnum;
 import com.jonyshare.server.service.FileService;
-import com.jonyshare.server.util.UuidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,12 +44,10 @@ public class UploadController {
                               Integer size,
                               Integer shardIndex,
                               Integer shardSize,
-                              Integer shardTotal) throws IOException {
+                              Integer shardTotal,
+                              String key) throws IOException {
+
         LOG.info("上传文件开始");
-
-        // 分片的key
-        String key = UuidUtil.getShortUuid();
-
         // 获得文件使用类型枚举，若分类文件夹不存在，为其创建
         FileUseEnum fileUseEnum = FileUseEnum.getByCode(use);
         String dir = fileUseEnum.name().toLowerCase();
@@ -75,7 +72,7 @@ public class UploadController {
         fileDto.setShardIndex(shardIndex);
         fileDto.setShardSize(shardSize);
         fileDto.setShardTotal(shardTotal);
-        fileDto.setKey(key); // 暂时填充为和分片的名称一样
+        fileDto.setKey(key); // 前端利用md5信息摘要生成的文件的唯一标识
         fileService.save(fileDto);
 
         ResponseDto responseDto = new ResponseDto();

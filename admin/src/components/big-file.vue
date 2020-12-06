@@ -63,6 +63,11 @@
           return;
         }
 
+        console.log(file);
+        // 生成文件的标识，利用md5信息摘要算法
+        let key = hex_md5(file); // 是16进制的
+        let key10 = parseInt(key, 16); //转成10进制
+        let key62 = Tool._10to62(key10); //转成62进制，缩短字符串长度
 
         // 文件分片
         let shardSize = 10 * 1024 * 1024; // 10MB
@@ -82,6 +87,7 @@
         formData.append('name', file.name);
         formData.append('suffix', suffix);
         formData.append('size', size);
+        formData.append('key', key62);
 
         Loading.show();
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/upload', formData).then((response) =>{
