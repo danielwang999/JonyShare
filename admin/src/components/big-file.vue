@@ -69,11 +69,20 @@
         let shardIndex = 0; // 分片序号
         let start = shardIndex * shardSize;
         let end = Math.min(start + shardSize, file.size);
-        let fileShard = file.slice(start, end);
+        let fileShard = file.slice(start, end); // 从文件中截取当前分片数据
+        let size = file.size;
+        let shardTotal = Math.ceil(size / shardSize); // 总片数
 
-
-        formData.append('file', fileShard);
+        // 和后端接口要保持一致
+        formData.append('shard', fileShard);
+        formData.append('shardIndex', shardIndex);
+        formData.append('shardSize', shardSize);
+        formData.append('shardTotal', shardTotal);
         formData.append('use', _this.use);
+        formData.append('name', file.name);
+        formData.append('suffix', suffix);
+        formData.append('size', size);
+
         Loading.show();
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/upload', formData).then((response) =>{
           Loading.hide();

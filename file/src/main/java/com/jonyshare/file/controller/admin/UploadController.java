@@ -38,14 +38,18 @@ public class UploadController {
     private FileService fileService;
 
     @RequestMapping("/upload")
-    public ResponseDto upload(@RequestParam MultipartFile file, String use) throws IOException {
-        LOG.info("上传文件开始：{}");
-        LOG.info(file.getOriginalFilename());
-        LOG.info(String.valueOf(file.getSize()));
+    public ResponseDto upload(@RequestParam MultipartFile shard,
+                              String use,
+                              String name,
+                              String suffix,
+                              Integer size,
+                              Integer shardIndex,
+                              Integer shardSize,
+                              Integer shardTotal) throws IOException {
+        LOG.info("上传文件开始");
 
-        String fileName = file.getOriginalFilename();
+        // 分片的key
         String key = UuidUtil.getShortUuid();
-        String suffix = fileName.substring(fileName.indexOf(".") + 1).toLowerCase();
 
         // 获得文件使用类型枚举，若分类文件夹不存在，为其创建
         FileUseEnum fileUseEnum = FileUseEnum.getByCode(use);
@@ -58,16 +62,20 @@ public class UploadController {
         String path = dir + File.separator + key + "." + suffix;
         String fullPath = FILE_PATH + path;
         File dest = new File(fullPath);
-        file.transferTo(dest);
+        shard.transferTo(dest);
         LOG.info(dest.getAbsolutePath());
 
         LOG.info("保存文件记录开始");
         FileDto fileDto = new FileDto();
         fileDto.setPath(path);
-        fileDto.setName(fileName);
-        fileDto.setSize(Math.toIntExact(file.getSize()));
+        fileDto.setName(name);
+        fileDto.setSize(size);
         fileDto.setSuffix(suffix);
         fileDto.setUse(use);
+        fileDto.setShardIndex(shardIndex);
+        fileDto.setShardSize(shardSize);
+        fileDto.setShardTotal(shardTotal);
+        fileDto.setKey(key); // 暂时填充为和分片的名称一样
         fileService.save(fileDto);
 
         ResponseDto responseDto = new ResponseDto();
