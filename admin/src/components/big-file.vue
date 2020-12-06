@@ -71,8 +71,8 @@
 
         // 文件分片
         let shardSize = 10 * 1024 * 1024; // 10MB
-        let shardIndex = 0; // 分片序号
-        let start = shardIndex * shardSize;
+        let shardIndex = 2; // 分片序号, 从1开始，1表示第一条数据
+        let start = (shardIndex - 1) * shardSize;
         let end = Math.min(start + shardSize, file.size);
         let fileShard = file.slice(start, end); // 从文件中截取当前分片数据
         let size = file.size;

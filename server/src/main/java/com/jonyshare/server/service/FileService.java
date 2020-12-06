@@ -10,11 +10,11 @@ import com.jonyshare.server.mapper.FileMapper;
 import com.jonyshare.server.util.CopyUtil;
 import com.jonyshare.server.util.UuidUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class FileService {
@@ -40,10 +40,12 @@ public class FileService {
      */
     public void save(FileDto fileDto) {
         File file = CopyUtil.copy(fileDto, File.class);
-        if (StringUtils.isEmpty(fileDto.getId())) {
+        File fileInDataBase = selectByKey(fileDto.getKey());
+        if (fileInDataBase == null) {
             this.insert(file);
         } else {
-            this.update(file);
+            fileInDataBase.setShardIndex(file.getShardIndex());
+            this.update(fileInDataBase);
         }
     }
 
@@ -71,5 +73,21 @@ public class FileService {
      */
     public void delete(String id) {
         fileMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     *
+     * @param key
+     * @return
+     */
+    public File selectByKey(String key) {
+        FileExample example = new FileExample();
+        example.createCriteria().andKeyEqualTo(key);
+        List<File> fileList = fileMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(fileList)) {
+            return null;
+        } else {
+            return fileList.get(0);
+        }
     }
 }
