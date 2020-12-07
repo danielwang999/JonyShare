@@ -68,6 +68,11 @@ public class FileDto {
      */
     private String key;
 
+    /**
+     * Base64模式下的分片数据
+     */
+    private String shard;
+
     public String getId() {
         return id;
     }
@@ -164,6 +169,14 @@ public class FileDto {
         this.key = key;
     }
 
+    public String getShard() {
+        return shard;
+    }
+
+    public void setShard(String shard) {
+        this.shard = shard;
+    }
+
     @Override
     public String toString() {
         return "FileDto{" +
@@ -179,6 +192,7 @@ public class FileDto {
                 ", shardSize=" + shardSize +
                 ", shardTotal=" + shardTotal +
                 ", key='" + key + '\'' +
+                ", shard='" + shard + '\'' +
                 '}';
     }
 

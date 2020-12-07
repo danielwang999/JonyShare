@@ -62,13 +62,12 @@
           $("#" + _this.inputId + "-input").val("");
           return;
         }
-
         console.log(file);
+
         // 生成文件的标识，利用md5信息摘要算法
         let key = hex_md5(file); // 是16进制的
         let key10 = parseInt(key, 16); //转成10进制
         let key62 = Tool._10to62(key10); //转成62进制，缩短字符串长度
-
         // 文件分片
         let shardSize = 10 * 1024 * 1024; // 10MB
         let shardIndex = 2; // 分片序号, 从1开始，1表示第一条数据
@@ -78,26 +77,34 @@
         let size = file.size;
         let shardTotal = Math.ceil(size / shardSize); // 总片数
 
-        // 和后端接口要保持一致
-        formData.append('shard', fileShard);
-        formData.append('shardIndex', shardIndex);
-        formData.append('shardSize', shardSize);
-        formData.append('shardTotal', shardTotal);
-        formData.append('use', _this.use);
-        formData.append('name', file.name);
-        formData.append('suffix', suffix);
-        formData.append('size', size);
-        formData.append('key', key62);
+        // 将文件类型转成base64进行传输
+        let fileReader = new FileReader();
+        fileReader.onload = function(e) {
+          let base64 = e.target.result;
+          console.log("文件的base64形式表示:", base64);
+          let param = {
+            'shard': base64,
+            'shardIndex': shardIndex,
+            'shardSize': shardSize,
+            'shardTotal': shardTotal,
+            'use': _this.use,
+            'name': file.name,
+            'suffix': suffix,
+            'size': file.size,
+            'key': key62
+          };
 
-        Loading.show();
-        _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/upload', formData).then((response) =>{
-          Loading.hide();
-          let resp = response.data;
-          console.log("上传文件成功：", resp);
-          _this.afterUpload(resp);
-          // 清空组件里面的东西，防止下次若上传一样的文件时，无法触发v-on:change="uploadFile()"
-          $("#" + _this.inputId + "-input").val("");
-        });
+          Loading.show();
+          _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/upload', param).then((response) =>{
+            Loading.hide();
+            let resp = response.data;
+            console.log("上传文件成功：", resp);
+            _this.afterUpload(resp);
+            // 清空组件里面的东西，防止下次若上传一样的文件时，无法触发v-on:change="uploadFile()"
+            $("#" + _this.inputId + "-input").val("");
+          });
+        };
+        fileReader.readAsDataURL(fileShard);
       },
 
       /**
