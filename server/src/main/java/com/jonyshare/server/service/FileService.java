@@ -76,7 +76,7 @@ public class FileService {
     }
 
     /**
-     *
+     * 通过key查找文件信息
      * @param key
      * @return
      */
@@ -89,5 +89,14 @@ public class FileService {
         } else {
             return fileList.get(0);
         }
+    }
+
+    /**
+     * 根据文件标识查询数据库记录
+     * @param key
+     * @return
+     */
+    public FileDto findByKey(String key) {
+        return CopyUtil.copy(selectByKey(key), FileDto.class);
     }
 }

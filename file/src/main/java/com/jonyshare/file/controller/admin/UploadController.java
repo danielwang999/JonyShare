@@ -9,9 +9,7 @@ import com.jonyshare.server.util.Base64ToMultipartFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -21,6 +19,7 @@ import java.io.*;
  * @author WangQiang
  * @date 2020/10/7-11:53
  */
+@RequestMapping("/admin")
 @RestController
 public class UploadController {
     public static final String BUSINESS_NAME = "文件上传";
@@ -79,6 +78,23 @@ public class UploadController {
 
         ResponseDto responseDto = new ResponseDto();
         fileDto.setPath(FILE_DOMAIN + path);
+        responseDto.setContent(fileDto);
+        return responseDto;
+    }
+
+    /**
+     * 根据key判断文件是否上传过
+     * @param key
+     * @return
+     */
+    @GetMapping("/check/{key}")
+    public ResponseDto check(@PathVariable String key) {
+        LOG.info("检查上传分片开始：{}", key);
+        ResponseDto responseDto = new ResponseDto();
+        FileDto fileDto = fileService.findByKey(key);
+        if (fileDto != null) {
+            fileDto.setPath(FILE_DOMAIN + fileDto.getPath());
+        }
         responseDto.setContent(fileDto);
         return responseDto;
     }
