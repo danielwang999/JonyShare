@@ -37,12 +37,12 @@
       }
     },
     methods: {
+
       /**
        * 图片上传
        */
       uploadFile() {
         let _this = this;
-        let formData = new window.FormData();
         let file = _this.$refs.file.files[0];
 
         // 文件上传格式的校验判断
@@ -62,7 +62,6 @@
           $("#" + _this.inputId + "-input").val("");
           return;
         }
-        console.log(file);
 
         // 生成文件的标识，利用md5信息摘要算法
         let key = hex_md5(file); // 是16进制的
@@ -70,42 +69,67 @@
         let key62 = Tool._10to62(key10); //转成62进制，缩短字符串长度
         // 文件分片
         let shardSize = 10 * 1024 * 1024; // 10MB
-        let shardIndex = 2; // 分片序号, 从1开始，1表示第一条数据
-        let start = (shardIndex - 1) * shardSize;
-        let end = Math.min(start + shardSize, file.size);
-        let fileShard = file.slice(start, end); // 从文件中截取当前分片数据
+        let shardIndex = 1; // 分片序号, 从1开始，1表示第一条数据
         let size = file.size;
         let shardTotal = Math.ceil(size / shardSize); // 总片数
 
+        let param = {
+          'shardIndex': shardIndex,
+          'shardSize': shardSize,
+          'shardTotal': shardTotal,
+          'use': _this.use,
+          'name': file.name,
+          'suffix': suffix,
+          'size': file.size,
+          'key': key62
+        };
+        _this.uploadShard(param);
+      },
+
+      /**
+       * 连续上传分片的递归辅助方法
+      */
+       uploadShard: function (param) {
+        let _this = this;
+        let shardIndex = param.shardIndex;
+        let shardTotal = param.shardTotal;
+        let shardSize = param.shardSize;
+        let fileShard = _this.getFileShard(shardIndex, shardSize);
         // 将文件类型转成base64进行传输
         let fileReader = new FileReader();
-        fileReader.onload = function(e) {
+        fileReader.onload = function (e) {
           let base64 = e.target.result;
-          console.log("文件的base64形式表示:", base64);
-          let param = {
-            'shard': base64,
-            'shardIndex': shardIndex,
-            'shardSize': shardSize,
-            'shardTotal': shardTotal,
-            'use': _this.use,
-            'name': file.name,
-            'suffix': suffix,
-            'size': file.size,
-            'key': key62
-          };
+          param.shard = base64;
 
           Loading.show();
-          _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/upload', param).then((response) =>{
+          _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/upload', param).then((response) => {
             Loading.hide();
             let resp = response.data;
-            console.log("上传文件成功：", resp);
-            _this.afterUpload(resp);
-            // 清空组件里面的东西，防止下次若上传一样的文件时，无法触发v-on:change="uploadFile()"
-            $("#" + _this.inputId + "-input").val("");
+            if (shardIndex < shardTotal) {
+              // 递归的继续上传下一个分片
+              param.shardIndex = param.shardIndex + 1;
+              _this.uploadShard(param);
+            } else {
+              console.log("上传文件成功：", resp);
+              _this.afterUpload(resp);
+              // 清空组件里面的东西，防止下次若上传一样的文件时，无法触发v-on:change="uploadFile()"
+              $("#" + _this.inputId + "-input").val("");
+            }
           });
         };
         fileReader.readAsDataURL(fileShard);
       },
+
+
+      getFileShard: function (shardIndex, shardSize) {
+        let _this = this;
+        let file = _this.$refs.file.files[0];
+        let start = (shardIndex - 1) * shardSize;
+        let end = Math.min(start + shardSize, file.size);
+        let fileShard = file.slice(start, end); // 从文件中截取当前分片数据
+        return fileShard;
+      },
+
 
       /**
        * 点击上传图片按钮，触发uploadFile()方法
