@@ -64,11 +64,12 @@
         }
 
         // 生成文件的标识，利用md5信息摘要算法
-        let key = hex_md5(file); // 是16进制的
+        let fileInfo = file.name + file.size + file.type + file.lastModified + file.lastModifiedDate;
+        let key = hex_md5(fileInfo); // 是16进制的
         let key10 = parseInt(key, 16); //转成10进制
         let key62 = Tool._10to62(key10); //转成62进制，缩短字符串长度
         // 文件分片
-        let shardSize = 10 * 1024 * 1024; // 10MB
+        let shardSize = 5 * 1024 * 1024; // 10MB
         let shardIndex = 1; // 分片序号, 从1开始，1表示第一条数据
         let size = file.size;
         let shardTotal = Math.ceil(size / shardSize); // 总片数
@@ -138,7 +139,7 @@
           _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', param).then((response) => {
             let resp = response.data;
             // 显示进度条
-            Progress.show(parseInt((shardIndex - 1) * 100 / shardTotal));
+            Progress.show(parseInt((shardIndex) * 100 / shardTotal));
             if (shardIndex < shardTotal) {
               // 递归的继续上传下一个分片
               param.shardIndex = param.shardIndex + 1;
