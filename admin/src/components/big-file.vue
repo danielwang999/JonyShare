@@ -127,22 +127,26 @@
         let shardTotal = param.shardTotal;
         let shardSize = param.shardSize;
         let fileShard = _this.getFileShard(shardIndex, shardSize);
+        // 显示进度条
+        Progress.show(parseInt((shardIndex - 1) * 100 / shardTotal));
         // 将文件类型转成base64进行传输
         let fileReader = new FileReader();
         fileReader.onload = function (e) {
           let base64 = e.target.result;
           param.shard = base64;
 
-          Loading.show();
           _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', param).then((response) => {
-            Loading.hide();
             let resp = response.data;
+            // 显示进度条
+            Progress.show(parseInt((shardIndex - 1) * 100 / shardTotal));
             if (shardIndex < shardTotal) {
               // 递归的继续上传下一个分片
               param.shardIndex = param.shardIndex + 1;
               _this.uploadShard(param);
             } else {
               console.log("上传文件成功：", resp);
+              // 取消显示进度条
+              Progress.hide();
               _this.afterUpload(resp);
               // 清空组件里面的东西，防止下次若上传一样的文件时，无法触发v-on:change="uploadFile()"
               $("#" + _this.inputId + "-input").val("");

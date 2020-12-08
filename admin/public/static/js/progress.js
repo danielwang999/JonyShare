@@ -1,11 +1,16 @@
+/**
+ * 进度条工具类
+ */
 Progress = {
   show: function (width) {
     let _this = this;
     _this.width = width;
     if ($("#progress-div").length > 0) {
+      // 如果进度条已经存在，直接修改进度条的值
       $(".progress").attr("data-percent", width);
       $(".progress-bar").width(width + "%");
     } else {
+      // 创建一个进度条
       let progressDiv = "<div id=\"progress-div\" style=\"z-index: 10011;\n" +
         "    position: fixed;\n" +
         "    padding: 10px;\n" +
@@ -45,5 +50,6 @@ Progress = {
       $("#progress-div").remove();
       $("#progress-overlay").remove();
     }, 1000);
+    // 此处延迟1s是为了用户体验，让用户看到上传到100%了。
   }
 };
