@@ -29,6 +29,11 @@
         <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
         <mybatis.version>2.1.3</mybatis.version>
         <mysql.version>8.0.18</mysql.version>
+        <pagehelper.version>1.2.10</pagehelper.version>
+        <fastjson.version>1.2.60</fastjson.version>
+        <freemarker.version>2.3.29</freemarker.version>
+        <dom4j.version>1.6.1</dom4j.version>
+        <aliyunoss.version>3.8.0</aliyunoss.version>
     </properties>
 
     <dependencyManagement>
@@ -59,21 +64,21 @@
             <dependency>
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>1.2.10</version>
+                <version>${pagehelper.version}</version>
             </dependency>
 
             <!-- fastjson -->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
-                <version>1.2.60</version>
+                <version>${fastjson.version}</version>
             </dependency>
 
             <!-- freemarker -->
             <dependency>
                 <groupId>org.freemarker</groupId>
                 <artifactId>freemarker</artifactId>
-                <version>2.3.29</version>
+                <version>${freemarker.version}</version>
             </dependency>
 
 
@@ -89,7 +94,14 @@
             <dependency>
                 <groupId>dom4j</groupId>
                 <artifactId>dom4j</artifactId>
-                <version>1.6.1</version>
+                <version>${dom4j.version}</version>
+            </dependency>
+
+            <!-- 阿里云OSS依赖 -->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyunoss.version}</version>
             </dependency>
 
 

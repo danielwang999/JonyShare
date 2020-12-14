@@ -69,7 +69,7 @@
         let key10 = parseInt(key, 16); //转成10进制
         let key62 = Tool._10to62(key10); //转成62进制，缩短字符串长度
         // 文件分片
-        let shardSize = 5 * 1024 * 1024; // 10MB
+        let shardSize = 1 * 1024 * 1024; // 10MB
         let shardIndex = 1; // 分片序号, 从1开始，1表示第一条数据
         let size = file.size;
         let shardTotal = Math.ceil(size / shardSize); // 总片数
@@ -136,7 +136,7 @@
           let base64 = e.target.result;
           param.shard = base64;
 
-          _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', param).then((response) => {
+          _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/oss-append', param).then((response) => {
             let resp = response.data;
             // 显示进度条
             Progress.show(parseInt((shardIndex) * 100 / shardTotal));
