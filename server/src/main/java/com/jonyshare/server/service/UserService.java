@@ -69,7 +69,9 @@ public class UserService {
      * 更新
      */
     private void update(User user) {
-        userMapper.updateByPrimaryKey(user);
+        user.setPassword(null);
+        //userMapper.updateByPrimaryKey(user);
+        userMapper.updateByPrimaryKeySelective(user); // 没值的属性不做update操作
     }
 
     /**
@@ -93,5 +95,19 @@ public class UserService {
         } else {
             return userList.get(0);
         }
+    }
+
+
+    /**
+     * 重置密码
+     * @param userDto
+     */
+    public void savePassword(UserDto userDto) {
+        User user = new User();
+        user.setId(userDto.getId());
+        // 后端密码加密
+        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
+        user.setPassword(userDto.getPassword());
+        userMapper.updateByPrimaryKeySelective(user);
     }
 }

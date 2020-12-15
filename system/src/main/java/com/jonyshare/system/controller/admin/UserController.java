@@ -1,18 +1,13 @@
-package com.jonyshare.business.controller.admin;
+package com.jonyshare.system.controller.admin;
 
-import com.github.pagehelper.Page;
-import com.jonyshare.server.domain.User;
-import com.jonyshare.server.dto.UserDto;
 import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.dto.ResponseDto;
+import com.jonyshare.server.dto.UserDto;
 import com.jonyshare.server.service.UserService;
 import com.jonyshare.server.util.ValidatorUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 
 @RestController
@@ -51,6 +46,21 @@ public class UserController {
         ValidatorUtil.require(userDto.getPassword(), "密码");
         ResponseDto responseDto = new ResponseDto();
         userService.save(userDto);
+        responseDto.setContent(userDto);
+        return responseDto;
+    }
+
+    /**
+     * 保存密码
+     * @param userDto
+     * @return
+     */
+    @PostMapping("/save-password")
+    public ResponseDto savePassword(@RequestBody UserDto userDto) {
+        // 保存校验
+        ValidatorUtil.require(userDto.getPassword(), "密码");
+        ResponseDto responseDto = new ResponseDto();
+        userService.savePassword(userDto);
         responseDto.setContent(userDto);
         return responseDto;
     }
