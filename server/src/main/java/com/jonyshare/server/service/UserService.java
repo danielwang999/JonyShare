@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jonyshare.server.domain.User;
 import com.jonyshare.server.domain.UserExample;
+import com.jonyshare.server.dto.LoginUserDto;
 import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.dto.UserDto;
 import com.jonyshare.server.exception.BusinessException;
@@ -11,6 +12,8 @@ import com.jonyshare.server.exception.BusinessExceptionCode;
 import com.jonyshare.server.mapper.UserMapper;
 import com.jonyshare.server.util.CopyUtil;
 import com.jonyshare.server.util.UuidUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
@@ -24,6 +27,8 @@ public class UserService {
 
     @Resource
     private UserMapper userMapper;
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
     /**
      * 列表查询
@@ -109,5 +114,30 @@ public class UserService {
         userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
         user.setPassword(userDto.getPassword());
         userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    /**
+     * 登录
+     * @param userDto
+     */
+    public LoginUserDto login(UserDto userDto) {
+        // 后端密码加密
+        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
+        User user = selectByLoginName(userDto.getLoginName());
+        if (user == null) {
+            LOG.info("用户名不存在, {}", userDto.getLoginName());
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+        } else {
+            if (user.getPassword().equals(userDto.getPassword())) {
+                // 登录成功
+                LoginUserDto loginUserDto = CopyUtil.copy(user, LoginUserDto.class);
+                // 为登录用户读取权限
+                //setAuth(loginUserDto);
+                return loginUserDto;
+            } else {
+                LOG.info("密码不对, 输入密码：{}, 数据库密码：{}", userDto.getPassword(), user.getPassword());
+                throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+            }
+        }
     }
 }

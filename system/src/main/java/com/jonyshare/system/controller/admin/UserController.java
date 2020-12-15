@@ -1,5 +1,6 @@
 package com.jonyshare.system.controller.admin;
 
+import com.jonyshare.server.dto.LoginUserDto;
 import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.dto.ResponseDto;
 import com.jonyshare.server.dto.UserDto;
@@ -74,6 +75,20 @@ public class UserController {
     public ResponseDto delete(@PathVariable String id) {
         ResponseDto responseDto = new ResponseDto();
         userService.delete(id);
+        return responseDto;
+    }
+
+    /**
+     * 登录
+     * @param userDto
+     */
+    @PostMapping("/login")
+    public ResponseDto login(@RequestBody UserDto userDto) {
+        // 保存校验
+        ValidatorUtil.require(userDto.getPassword(), "密码");
+        ResponseDto responseDto = new ResponseDto();
+        LoginUserDto loginUserDto = userService.login(userDto);
+        responseDto.setContent(loginUserDto);
         return responseDto;
     }
 
