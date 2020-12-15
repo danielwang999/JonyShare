@@ -16,7 +16,7 @@ import java.util.*;
  * @date 2020/10/22-16:20
  */
 public class ServerGenerator {
-    static String MODULE = "business";
+    static String MODULE = "system";
     static String toServicePath = "server\\src\\main\\java\\com\\jonyshare\\server\\service\\";
     static String toDtoPath = "server\\src\\main\\java\\com\\jonyshare\\server\\dto\\";
     static String toControllerPath = MODULE + "\\src\\main\\java\\com\\jonyshare\\" + MODULE + "\\controller\\admin\\";

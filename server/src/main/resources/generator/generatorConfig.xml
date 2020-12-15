@@ -21,9 +21,16 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/jonyshare?serverTimezone=Asia/Shanghai"
+                        connectionURL="jdbc:mysql://localhost:3306/jonyshare"
                         userId="root"
                         password="root">
+            <!--MySQL 8.x 需要指定服务器的时区-->
+            <property name="serverTimezone" value="Asia/Shanghai"/>
+            <!--MySQL 不支持 schema 或者 catalog 所以需要添加这个-->
+            <!--参考 : http://www.mybatis.org/generator/usage/mysql.html-->
+            <property name="nullCatalogMeansCurrent" value="true"/>
+            <!-- MySQL8默认启用 SSL ,不关闭会有警告-->
+            <property name="useSSL" value="false"/>
         </jdbcConnection>
 
         <!-- domain类的位置 -->
@@ -49,8 +56,8 @@
 <!--        <table tableName="course_content" domainObjectName="CourseContent"/>-->
 <!--        <table tableName="course_content_file" domainObjectName="CourseContentFile"/>-->
 <!--        <table tableName="teacher" domainObjectName="Teacher"/>-->
-        <table tableName="file" domainObjectName="File"/>
-<!--        <table tableName="user" domainObjectName="User"/>-->
+<!--        <table tableName="file" domainObjectName="File"/>-->
+        <table tableName="user" domainObjectName="User"/>
 <!--        <table tableName="resource" domainObjectName="Resource"/>-->
 <!--        <table tableName="role" domainObjectName="Role"/>-->
 <!--        <table tableName="role_resource" domainObjectName="RoleResource"/>-->

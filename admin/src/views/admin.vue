@@ -368,56 +368,18 @@
               <span class="menu-text">
 								系统管理
 							</span>
-
               <b class="arrow fa fa-angle-down"></b>
             </a>
 
             <b class="arrow"></b>
 
             <ul class="submenu">
-              <li class="">
-                <a href="#" class="dropdown-toggle">
+              <li class="active" id="system-user-sidebar">
+                <router-link to="/system/user" class="dropdown-toggle">
                   <i class="menu-icon fa fa-caret-right"></i>
-
                   用户管理
                   <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-                <b class="arrow"></b>
-
-                <ul class="submenu">
-                  <li class="">
-                    <a href="top-menu.html">
-                      <i class="menu-icon fa fa-caret-right"></i>
-                      Top Menu
-                    </a>
-
-                    <b class="arrow"></b>
-                  </li>
-
-                </ul>
-              </li>
-              <li class="">
-                <a href="#" class="dropdown-toggle">
-                  <i class="menu-icon fa fa-caret-right"></i>
-
-                  权限管理
-                  <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-                <b class="arrow"></b>
-
-                <ul class="submenu">
-                  <li class="">
-                    <a href="top-menu.html">
-                      <i class="menu-icon fa fa-caret-right"></i>
-                      Top Menu
-                    </a>
-
-                    <b class="arrow"></b>
-                  </li>
-
-                </ul>
+                </router-link>
               </li>
             </ul>
           </li>
