@@ -282,8 +282,7 @@
               <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                 <img class="nav-user-photo" src="../../public/ace/assets/images/avatars/user.jpg" alt="Jason's Photo" />
                 <span class="user-info">
-									<small>Welcome,</small>
-									Jason
+									{{loginUser.name}}
 								</span>
 
                 <i class="ace-icon fa fa-caret-down"></i>
@@ -356,7 +355,7 @@
           <li class="" id="welcome-sidebar">
             <router-link to="/welcome">
               <i class="menu-icon fa fa-tachometer"></i>
-              <span class="menu-text"> 欢迎 </span>
+              <span class="menu-text"> 欢迎: {{loginUser.name}} </span>
             </router-link>
 
             <b class="arrow"></b>
@@ -508,6 +507,11 @@
 <script>
   export default {
     name: "admin",
+    data: function() {
+      return {
+        loginUser: {},
+      }
+    },
     mounted: function() {
       let _this = this;
       $("body").removeClass("login-layout light-login");
@@ -515,6 +519,8 @@
       // 初始化
       _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
 
+      // 从SessionStorage里面获得登录用户信息
+      _this.loginUser = Tool.getLoginUser();
     },
     watch: {
       // 这里是监听路由跳转，进行导航栏的激活功能

@@ -136,7 +136,8 @@
           if (resp.success) {
             console.log("登录成功：", resp.content);
             // let loginUser = resp.content;
-            // Tool.setLoginUser(resp.content);
+            // 保存登录信息
+            Tool.setLoginUser(resp.content);
             //
             // // 判断“记住我”
             // if (_this.remember) {
