@@ -2,7 +2,7 @@
  * MD5工具类
  */
 
-var KEY = "!@#QWERT";
+var KEY = "!@#(@&alkdjf"; // 盐值
 /*
  * Configurable variables. You may need to tweak these to be compatible with
  * the server-side, but the defaults work in most cases.

@@ -13,6 +13,7 @@ import com.jonyshare.server.util.CopyUtil;
 import com.jonyshare.server.util.UuidUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -41,6 +42,9 @@ public class UserService {
      * 保存，id有值时更新，无值时新增
      */
     public void save(UserDto userDto) {
+        // 后端密码加密
+        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
+
         User user = CopyUtil.copy(userDto, User.class);
         if (StringUtils.isEmpty(userDto.getId())) {
             this.insert(user);
