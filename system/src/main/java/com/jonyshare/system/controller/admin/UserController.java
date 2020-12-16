@@ -1,14 +1,12 @@
 package com.jonyshare.system.controller.admin;
 
-import com.jonyshare.server.dto.LoginUserDto;
-import com.jonyshare.server.dto.PageDto;
-import com.jonyshare.server.dto.ResponseDto;
-import com.jonyshare.server.dto.UserDto;
+import com.jonyshare.server.dto.*;
 import com.jonyshare.server.service.UserService;
 import com.jonyshare.server.util.ValidatorUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 
 @RestController
@@ -83,12 +81,24 @@ public class UserController {
      * @param userDto
      */
     @PostMapping("/login")
-    public ResponseDto login(@RequestBody UserDto userDto) {
+    public ResponseDto login(@RequestBody UserDto userDto, HttpServletRequest request) {
         // 保存校验
         ValidatorUtil.require(userDto.getPassword(), "密码");
         ResponseDto responseDto = new ResponseDto();
         LoginUserDto loginUserDto = userService.login(userDto);
+        request.getSession().setAttribute(Constants.LOGIN_USER, loginUserDto);
         responseDto.setContent(loginUserDto);
+        return responseDto;
+    }
+
+    /**
+     * 退出登录Get
+     * @param
+     */
+    @GetMapping("/logout")
+    public ResponseDto logout(HttpServletRequest request) {
+        ResponseDto responseDto = new ResponseDto();
+        request.getSession().removeAttribute(Constants.LOGIN_USER);
         return responseDto;
     }
 
