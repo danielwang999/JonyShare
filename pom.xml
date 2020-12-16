@@ -34,6 +34,7 @@
         <freemarker.version>2.3.29</freemarker.version>
         <dom4j.version>1.6.1</dom4j.version>
         <aliyunoss.version>3.8.0</aliyunoss.version>
+        <kaptcha.version>2.3.2</kaptcha.version>
     </properties>
 
     <dependencyManagement>
@@ -104,6 +105,11 @@
                 <version>${aliyunoss.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.github.penggle</groupId>
+                <artifactId>kaptcha</artifactId>
+                <version>${kaptcha.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
