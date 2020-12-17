@@ -3,6 +3,9 @@ package com.jonyshare.system.controller.admin;
 import com.jonyshare.server.dto.*;
 import com.jonyshare.server.service.UserService;
 import com.jonyshare.server.util.ValidatorUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -13,7 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/admin/user")
 public class UserController {
 
-    public static final String BUSINESS_NAME = "";
+    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+    public static final String BUSINESS_NAME = "用户";
 
     @Resource
     private UserService userService;
@@ -85,6 +89,30 @@ public class UserController {
         // 保存校验
         ValidatorUtil.require(userDto.getPassword(), "密码");
         ResponseDto responseDto = new ResponseDto();
+
+        LOG.info("UserController：sessionId:" + request.getSession().getId());
+
+        // 根据验证码token去获取缓存中的验证码，和用户输入的验证码是否一致
+        String imageCode = (String) request.getSession().getAttribute(userDto.getImageCodeToken());
+        //String imageCode = (String) redisTemplate.opsForValue().get(userDto.getImageCodeToken());
+        LOG.info("从redis中获取到的验证码：{}", imageCode);
+        if (StringUtils.isEmpty(imageCode)) {
+            responseDto.setSuccess(false);
+            responseDto.setMessage("验证码已过期");
+            LOG.info("用户登录失败，验证码已过期");
+            return responseDto;
+        }
+        if (!imageCode.toLowerCase().equals(userDto.getImageCode().toLowerCase())) {
+            responseDto.setSuccess(false);
+            responseDto.setMessage("验证码不对");
+            LOG.info("用户登录失败，验证码不对");
+            return responseDto;
+        } else {
+            // 验证通过后，移除验证码
+            request.getSession().removeAttribute(userDto.getImageCodeToken());
+            //redisTemplate.delete(userDto.getImageCodeToken());
+        }
+
         LoginUserDto loginUserDto = userService.login(userDto);
         request.getSession().setAttribute(Constants.LOGIN_USER, loginUserDto);
         responseDto.setContent(loginUserDto);

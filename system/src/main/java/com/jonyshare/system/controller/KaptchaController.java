@@ -1,6 +1,8 @@
 package com.jonyshare.system.controller;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 @RequestMapping("/admin/kaptcha")
 public class KaptchaController {
     public static final String BUSINESS_NAME = "图片验证码";
+    private static final Logger LOG = LoggerFactory.getLogger(KaptchaController.class);
 
     @Qualifier("getDefaultKaptcha")
     @Autowired
@@ -36,6 +39,9 @@ public class KaptchaController {
 
             // 将生成的验证码放入会话缓存中，后续验证的时候用到
             request.getSession().setAttribute(imageCodeToken, createText);
+            LOG.info("KaptchaController：sessionId:" + request.getSession().getId());
+            LOG.info("保存在session里面的验证码" + request.getSession().getAttribute(imageCodeToken));
+
             // 将生成的验证码放入redis缓存中，后续验证的时候用到
             //redisTemplate.opsForValue().set(imageCodeToken, createText, 300, TimeUnit.SECONDS);
 

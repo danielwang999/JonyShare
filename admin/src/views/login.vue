@@ -125,7 +125,7 @@
           _this.user.password = hex_md5(_this.user.password + KEY);
         }
 
-        //_this.user.imageCodeToken = _this.imageCodeToken;
+        _this.user.imageCodeToken = _this.imageCodeToken;
 
         Loading.show();
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/user/login', _this.user).then((response)=>{
@@ -154,9 +154,11 @@
             }
             _this.$router.push("/welcome")
           } else {
+            // 登录失败
             Toast.warning(resp.message);
-            //_this.user.password = "";
-            //_this.loadImageCode();
+            _this.user.password = "";
+            _this.user.imageCode = "";
+            _this.loadImageCode();
           }
         });
       },

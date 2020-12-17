@@ -7,6 +7,9 @@ import filter from './filter/filter'
 Vue.config.productionTip = false;
 Vue.prototype.$ajax = axios;
 
+// 解决每次ajax请求，对应的SessionId不一致的问题。没用啊！啥情况！没用啊！啥情况！没用啊！啥情况！
+axios.defaults.withCredentials = true;
+
 /**
  * axios拦截器
  */
