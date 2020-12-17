@@ -134,7 +134,7 @@
           if (resp.success) {
             console.log("登录成功：", resp.content);
             let loginUser = resp.content;
-            // 保存登录信息
+            // 保存登录用户信息到H5的session缓存
             Tool.setLoginUser(resp.content);
 
             // 判断“记住我”
