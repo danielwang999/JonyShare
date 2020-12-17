@@ -5,6 +5,7 @@ import com.jonyshare.server.service.UserService;
 import com.jonyshare.server.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,9 @@ public class UserController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    public RedisTemplate redisTemplate;
 
     /**
      * 列表查询
@@ -90,11 +94,9 @@ public class UserController {
         ValidatorUtil.require(userDto.getPassword(), "密码");
         ResponseDto responseDto = new ResponseDto();
 
-        LOG.info("UserController：sessionId:" + request.getSession().getId());
-
         // 根据验证码token去获取缓存中的验证码，和用户输入的验证码是否一致
-        String imageCode = (String) request.getSession().getAttribute(userDto.getImageCodeToken());
-        //String imageCode = (String) redisTemplate.opsForValue().get(userDto.getImageCodeToken());
+        //String imageCode = (String) request.getSession().getAttribute(userDto.getImageCodeToken());
+        String imageCode = (String) redisTemplate.opsForValue().get(userDto.getImageCodeToken());
         LOG.info("从redis中获取到的验证码：{}", imageCode);
         if (StringUtils.isEmpty(imageCode)) {
             responseDto.setSuccess(false);
@@ -109,8 +111,8 @@ public class UserController {
             return responseDto;
         } else {
             // 验证通过后，移除验证码
-            request.getSession().removeAttribute(userDto.getImageCodeToken());
-            //redisTemplate.delete(userDto.getImageCodeToken());
+            //request.getSession().removeAttribute(userDto.getImageCodeToken());
+            redisTemplate.delete(userDto.getImageCodeToken());
         }
 
         LoginUserDto loginUserDto = userService.login(userDto);

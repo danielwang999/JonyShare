@@ -5,17 +5,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/admin/kaptcha")
@@ -27,8 +30,8 @@ public class KaptchaController {
     @Autowired
     DefaultKaptcha defaultKaptcha;
 
-//    @Resource
-//    public RedisTemplate redisTemplate;
+    @Resource
+    public RedisTemplate redisTemplate;
 
     @GetMapping("/image-code/{imageCodeToken}")
     public void imageCode(@PathVariable(value = "imageCodeToken") String imageCodeToken, HttpServletRequest request, HttpServletResponse httpServletResponse) throws Exception{
@@ -37,13 +40,13 @@ public class KaptchaController {
             // 生成验证码字符串
             String createText = defaultKaptcha.createText();
 
-            // 将生成的验证码放入会话缓存中，后续验证的时候用到
-            request.getSession().setAttribute(imageCodeToken, createText);
-            LOG.info("KaptchaController：sessionId:" + request.getSession().getId());
-            LOG.info("保存在session里面的验证码" + request.getSession().getAttribute(imageCodeToken));
+//            // 将生成的验证码放入会话缓存中，后续验证的时候用到
+//            request.getSession().setAttribute(imageCodeToken, createText);
+//            LOG.info("KaptchaController：sessionId:" + request.getSession().getId());
+//            LOG.info("保存在session里面的验证码" + request.getSession().getAttribute(imageCodeToken));
 
-            // 将生成的验证码放入redis缓存中，后续验证的时候用到
-            //redisTemplate.opsForValue().set(imageCodeToken, createText, 300, TimeUnit.SECONDS);
+            // 将生成的验证码放入redis缓存中，后续验证的时候用到 超过300缓存无效
+            redisTemplate.opsForValue().set(imageCodeToken, createText, 300, TimeUnit.SECONDS);
 
             // 使用验证码字符串生成验证码图片
             BufferedImage challenge = defaultKaptcha.createImage(createText);
