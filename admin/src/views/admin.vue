@@ -380,6 +380,14 @@
                   <b class="arrow fa fa-angle-down"></b>
                 </router-link>
               </li>
+
+              <li class="active" id="system-resource-sidebar">
+                <router-link to="/system/resource" class="dropdown-toggle">
+                  <i class="menu-icon fa fa-caret-right"></i>
+                  资源管理
+                  <b class="arrow fa fa-angle-down"></b>
+                </router-link>
+              </li>
             </ul>
           </li>
 
