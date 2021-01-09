@@ -388,6 +388,14 @@
                   <b class="arrow fa fa-angle-down"></b>
                 </router-link>
               </li>
+
+              <li class="active" id="system-role-sidebar">
+                <router-link to="/system/role" class="dropdown-toggle">
+                  <i class="menu-icon fa fa-caret-right"></i>
+                  角色管理
+                  <b class="arrow fa fa-angle-down"></b>
+                </router-link>
+              </li>
             </ul>
           </li>
 
