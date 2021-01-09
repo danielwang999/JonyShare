@@ -1,10 +1,10 @@
 <template>
   <div>
     <p>
-      <button v-on:click="add()" class="btn btn-white btn-default btn-round">
-        <i class="ace-icon fa fa-edit"></i>
-        新增
-      </button>
+<!--      <button v-on:click="add()" class="btn btn-white btn-default btn-round">-->
+<!--        <i class="ace-icon fa fa-edit"></i>-->
+<!--        新增-->
+<!--      </button>-->
       &nbsp;
       <button v-on:click="list(1)" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-refresh"></i>
@@ -12,7 +12,9 @@
       </button>
     </p>
 
-    <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
+    <div>
+      <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
+    </div>
 
     <table id="simple-table" class="table  table-bordered table-hover">
       <thead>
@@ -46,6 +48,12 @@
       </tr>
       </tbody>
     </table>
+
+    <!--  树形展示资源列表  -->
+    <div class="col-md-6">
+      <ul id="tree" class="ztree"></ul>
+    </div>
+
 
     <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
@@ -101,14 +109,16 @@
       return {
         resource: {},
         resources: [],
+        tree: {},
       }
     },
     mounted: function() {
       let _this = this;
-      _this.$refs.pagination.size = 5;
+      _this.$refs.pagination.size = 10;
       _this.list(1);
       // sidebar激活样式方法一
       // this.$parent.activeSidebar("system-resource-sidebar");
+      _this.listTree();
 
     },
     methods: {
@@ -145,6 +155,21 @@
           _this.resources = resp.content.list;
           _this.$refs.pagination.render(page, resp.content.total);
 
+        })
+      },
+
+      /**
+       * 树形展示资源列表
+       */
+      listTree() {
+        let _this = this;
+        Loading.show();
+        _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/resource/load-tree').then((res)=>{
+          Loading.hide();
+          let response = res.data;
+          _this.resources = response.content;
+          // 初始化树
+          _this.initTree();
         })
       },
 
@@ -194,7 +219,26 @@
             }
           })
         });
-      }
+      },
+
+      /**
+       * 初始资源树
+       */
+      initTree() {
+        let _this = this;
+        let setting = {
+          data: {
+            simpleData: {
+              idKey: "id",
+              pIdKey: "parent",
+              rootPId: "",
+              // enable: true
+            }
+          }
+        };
+        _this.zTree = $.fn.zTree.init($("#tree"), setting, _this.resources);
+        _this.zTree.expandAll(true);
+      },
     }
   }
 </script>

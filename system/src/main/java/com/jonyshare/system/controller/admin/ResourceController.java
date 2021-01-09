@@ -31,6 +31,17 @@ public class ResourceController {
     }
 
     /**
+     * 树形返回所有资源
+     * @return
+     */
+    @RequestMapping("/load-tree")
+    public ResponseDto listTree() {
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setContent(resourceService.loadTree());
+        return responseDto;
+    }
+
+    /**
      * 保存，包括新增和修改
      * @param resourceDto
      * @return

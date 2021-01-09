@@ -4,13 +4,15 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jonyshare.server.domain.Resource;
 import com.jonyshare.server.domain.ResourceExample;
-import com.jonyshare.server.dto.ResourceDto;
 import com.jonyshare.server.dto.PageDto;
+import com.jonyshare.server.dto.ResourceDto;
 import com.jonyshare.server.mapper.ResourceMapper;
 import com.jonyshare.server.util.CopyUtil;
 import com.jonyshare.server.util.UuidUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,6 +32,38 @@ public class ResourceService {
         pageDto.setTotal(pageInfo.getTotal());
         List<ResourceDto> resourceDtoList = CopyUtil.copyList(resourceList, ResourceDto.class);
         pageDto.setList(resourceDtoList);
+    }
+
+    /**
+     * 按约定把资源列表转成树
+     * 要求：ID正序排列
+     * @return
+     */
+    public List<ResourceDto> loadTree() {
+        ResourceExample resourceExample = new ResourceExample();
+        resourceExample.setOrderByClause("id asc"); // 按id升序查找
+        List<Resource> resourceList = resourceMapper.selectByExample(resourceExample);
+        List<ResourceDto> resourceDtoList = CopyUtil.copyList(resourceList, ResourceDto.class);
+        for (int i = resourceDtoList.size() - 1; i >= 0; i--) {
+            // 从后往前遍历
+            ResourceDto child = resourceDtoList.get(i);
+            if (StringUtils.isEmpty(child.getParent())) {
+                continue;
+            }
+            for (int j = i - 1; j >= 0; j--) {
+                ResourceDto parent = resourceDtoList.get(j);
+                if (child.getParent().equals(parent.getId())) {
+                    // 找到父亲资源
+                    if (parent.getChildren() == null) {
+                        parent.setChildren(new ArrayList<>());
+                    }
+                    parent.getChildren().add(0, resourceDtoList.get(i));
+                    resourceDtoList.remove(i);
+                    break;
+                }
+            }
+        }
+        return resourceDtoList;
     }
 
     /**
