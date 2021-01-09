@@ -31,6 +31,9 @@
         <td>{{role.desc}}</td>
       <td>
         <div class="hidden-sm hidden-xs btn-group">
+          <button v-on:click="editResource(role)" class="btn btn-xs btn-info">
+            <i class="ace-icon fa fa-list bigger-120"></i>
+          </button>
           <button v-on:click="edit(role)" class="btn btn-xs btn-info">
             <i class="ace-icon fa fa-pencil bigger-120"></i>
           </button>
@@ -42,6 +45,31 @@
       </tr>
       </tbody>
     </table>
+
+    <!-- 角色资源关联配置模态框 -->
+    <div id="resource-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">角色资源关联配置</h4>
+          </div>
+          <div class="modal-body">
+            <ul id="tree" class="ztree"></ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-white btn-default btn-round" data-dismiss="modal">
+              <i class="ace-icon fa fa-times"></i>
+              关闭
+            </button>
+            <button type="button" class="btn btn-white btn-info btn-round" v-on:click="saveResource()">
+              <i class="ace-icon fa fa-plus blue"></i>
+              保存
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
@@ -85,6 +113,8 @@
       return {
         role: {},
         roles: [],
+        resources: [],
+        zTree: {},
       }
     },
     mounted: function() {
@@ -178,7 +208,64 @@
             }
           })
         });
-      }
+      },
+
+      /**
+       * 点击【编辑】编辑角色的资源
+       */
+      editResource(role) {
+        let _this = this;
+        _this.role = $.extend({}, role);
+        _this.loadResource();
+        $("#resource-modal").modal("show");
+      },
+
+      /**
+       * 加载资源树
+       */
+      loadResource() {
+        let _this = this;
+        Loading.show();
+        _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/resource/load-tree').then((res)=>{
+          Loading.hide();
+          let response = res.data;
+          _this.resources = response.content;
+          // 初始化树
+          _this.initTree();
+          //_this.listRoleResource();
+        })
+      },
+
+      /**
+       * 初始资源树
+       */
+      initTree() {
+        let _this = this;
+        let setting = {
+          check: {
+            enable: true
+          },
+          data: {
+            simpleData: {
+              idKey: "id",
+              pIdKey: "parent",
+              rootPId: "",
+              enable: true
+            }
+          }
+        };
+
+        _this.zTree = $.fn.zTree.init($("#tree"), setting, _this.resources);
+        _this.zTree.expandAll(true);
+      },
+
+
+      /**
+       * 保存为角色选中的资源
+       */
+      saveResource() {
+
+      },
     }
   }
 </script>
