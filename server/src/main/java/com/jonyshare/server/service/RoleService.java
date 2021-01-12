@@ -4,12 +4,16 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jonyshare.server.domain.Role;
 import com.jonyshare.server.domain.RoleExample;
+import com.jonyshare.server.domain.RoleResource;
+import com.jonyshare.server.domain.RoleResourceExample;
 import com.jonyshare.server.dto.RoleDto;
 import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.mapper.RoleMapper;
+import com.jonyshare.server.mapper.RoleResourceMapper;
 import com.jonyshare.server.util.CopyUtil;
 import com.jonyshare.server.util.UuidUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -20,6 +24,9 @@ public class RoleService {
 
     @Resource
     private RoleMapper roleMapper;
+
+    @Resource
+    private RoleResourceMapper roleResourceMapper;
 
     /**
      * 列表查询
@@ -66,5 +73,27 @@ public class RoleService {
      */
     public void delete(String id) {
         roleMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 保存角色的资源
+     * @param roleDto
+     */
+    @Transactional
+    public void saveResources(RoleDto roleDto) {
+        String roleId = roleDto.getId();
+        List<String> resourceIds = roleDto.getResourceIds();
+        // 清空当前角色的所有资源
+        RoleResourceExample rre = new RoleResourceExample();
+        rre.createCriteria().andIdEqualTo(roleId);
+        roleResourceMapper.deleteByExample(rre);
+
+        for (String resourceId : resourceIds) {
+            RoleResource rr = new RoleResource();
+            rr.setId(UuidUtil.getShortUuid());
+            rr.setRoleId(roleId);
+            rr.setResourceId(resourceId);
+            roleResourceMapper.insert(rr);
+        }
     }
 }

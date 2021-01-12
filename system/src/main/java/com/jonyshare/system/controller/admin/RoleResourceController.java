@@ -1,18 +1,13 @@
-package com.jonyshare.business.controller.admin;
+package com.jonyshare.system.controller.admin;
 
-import com.github.pagehelper.Page;
-import com.jonyshare.server.domain.RoleResource;
-import com.jonyshare.server.dto.RoleResourceDto;
 import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.dto.ResponseDto;
+import com.jonyshare.server.dto.RoleResourceDto;
 import com.jonyshare.server.service.RoleResourceService;
 import com.jonyshare.server.util.ValidatorUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 
 @RestController

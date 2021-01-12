@@ -1,4 +1,4 @@
-package com.jonyshare.business.controller.admin;
+package com.jonyshare.${module}.controller.admin;
 
 import com.github.pagehelper.Page;
 import com.jonyshare.server.domain.${Domain};
