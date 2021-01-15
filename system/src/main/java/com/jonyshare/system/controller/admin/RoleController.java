@@ -1,14 +1,17 @@
 package com.jonyshare.system.controller.admin;
 
+import com.jonyshare.server.domain.Role;
 import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.dto.ResponseDto;
 import com.jonyshare.server.dto.RoleDto;
 import com.jonyshare.server.service.RoleResourceService;
 import com.jonyshare.server.service.RoleService;
+import com.jonyshare.server.util.CopyUtil;
 import com.jonyshare.server.util.ValidatorUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 @RestController
@@ -33,6 +36,19 @@ public class RoleController {
         roleService.list(pageDto);
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(pageDto);
+        return responseDto;
+    }
+
+    /**
+     * 加载所有的角色
+     * @return
+     */
+    @RequestMapping("/listAll")
+    public ResponseDto listAll() {
+        List<Role> roles = roleService.listAll();
+        List<RoleDto> roleDtos = CopyUtil.copyList(roles, RoleDto.class);
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setContent(roleDtos);
         return responseDto;
     }
 

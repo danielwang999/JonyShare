@@ -33,6 +33,9 @@
         <td>{{user.password}}</td>
       <td>
         <div class="hidden-sm hidden-xs btn-group">
+          <button v-on:click="editRole(user)" class="btn btn-xs btn-info">
+            <i class="ace-icon fa fa-user bigger-120"></i>
+          </button>
           <button v-on:click="editPassword(user)" class="btn btn-xs btn-info">
             <i class="ace-icon fa fa-key bigger-120"></i>
           </button>
@@ -116,6 +119,61 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div>
+
+    <!-- 角色用户关联配置 -->
+    <div id="role-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">用户角色关联配置</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <table id="user-table" class="table table-hover">
+                  <tbody>
+                  <tr v-for="role in roles">
+                    <td>{{role.name}}</td>
+                    <td class="text-right">
+                      <a v-on:click="addUser(user)" href="javascript:;" class="">
+                        <i class="ace-icon fa fa-arrow-circle-right blue"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-md-6">
+                <table id="role-user-table" class="table table-hover">
+                  <tbody>
+                  <tr v-for="role in userRoles">
+                    <td>{{role.name}}</td>
+                    <td class="text-right">
+                      <a v-on:click="deleteUser(user)" href="javascript:;" class="">
+                        <i class="ace-icon fa fa-trash blue"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-white btn-default btn-round" data-dismiss="modal">
+              <i class="ace-icon fa fa-times"></i>
+              关闭
+            </button>
+            <button type="button" class="btn btn-white btn-info btn-round" v-on:click="saveUser()">
+              <i class="ace-icon fa fa-plus blue"></i>
+              保存
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
   </div>
 </template>
 
@@ -128,6 +186,8 @@
       return {
         user: {},
         users: [],
+        roles: [],
+        userRoles: [],
       }
     },
     mounted: function() {
@@ -254,6 +314,42 @@
             }
           })
         });
+      },
+
+      /**
+       * 点击【角色】显示编辑角色用户的模态框
+       * @param user
+       */
+      editRole(user) {
+        let _this = this;
+        _this.user = $.extend({}, user);
+        _this.loadAllRoles();
+        $("#role-modal").modal("show");
+      },
+
+      /**
+       * 加载所有的角色
+       */
+      loadAllRoles(){
+        Loading.show();
+        let _this = this;
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/role/listAll').then((response)=>{
+          Loading.hide();
+          let resp = response.data;
+          if (resp.success) {
+            _this.roles = resp.content;
+            _this.loadUserRole(); // 加载对应用户所拥有的角色。
+          } else {
+            Toast.warning(resp.message)
+          }
+        })
+      },
+
+      /**
+       * 加载选中用户所拥有的角色
+       */
+      loadUserRole() {
+
       },
 
 

@@ -42,6 +42,10 @@ public class RoleService {
         pageDto.setList(roleDtoList);
     }
 
+    public List<Role> listAll() {
+        return roleMapper.selectByExample(new RoleExample());
+    }
+
     /**
      * 保存，id有值时更新，无值时新增
      */
