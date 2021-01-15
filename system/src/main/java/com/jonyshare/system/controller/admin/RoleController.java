@@ -3,6 +3,7 @@ package com.jonyshare.system.controller.admin;
 import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.dto.ResponseDto;
 import com.jonyshare.server.dto.RoleDto;
+import com.jonyshare.server.service.RoleResourceService;
 import com.jonyshare.server.service.RoleService;
 import com.jonyshare.server.util.ValidatorUtil;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,9 @@ public class RoleController {
 
     @Resource
     private RoleService roleService;
+
+    @Resource
+    private RoleResourceService roleResourceService;
 
     /**
      * 列表查询
@@ -67,6 +71,13 @@ public class RoleController {
         roleService.saveResources(roleDto);
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(roleDto);
+        return responseDto;
+    }
+
+    @RequestMapping("/list-resource/{roleId}")
+    public ResponseDto listRoleResource(@PathVariable String roleId) {
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setContent(roleService.getRoleResources(roleId));
         return responseDto;
     }
 

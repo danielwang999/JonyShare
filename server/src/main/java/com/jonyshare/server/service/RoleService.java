@@ -6,8 +6,8 @@ import com.jonyshare.server.domain.Role;
 import com.jonyshare.server.domain.RoleExample;
 import com.jonyshare.server.domain.RoleResource;
 import com.jonyshare.server.domain.RoleResourceExample;
-import com.jonyshare.server.dto.RoleDto;
 import com.jonyshare.server.dto.PageDto;
+import com.jonyshare.server.dto.RoleDto;
 import com.jonyshare.server.mapper.RoleMapper;
 import com.jonyshare.server.mapper.RoleResourceMapper;
 import com.jonyshare.server.util.CopyUtil;
@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -85,7 +86,7 @@ public class RoleService {
         List<String> resourceIds = roleDto.getResourceIds();
         // 清空当前角色的所有资源
         RoleResourceExample rre = new RoleResourceExample();
-        rre.createCriteria().andIdEqualTo(roleId);
+        rre.createCriteria().andRoleIdEqualTo(roleId);
         roleResourceMapper.deleteByExample(rre);
 
         for (String resourceId : resourceIds) {
@@ -95,5 +96,21 @@ public class RoleService {
             rr.setResourceId(resourceId);
             roleResourceMapper.insert(rr);
         }
+    }
+
+    /**
+     * 根据roleId，查找相应角色所拥有的resourceIds
+     * @param roleId
+     * @return
+     */
+    public List<String> getRoleResources(String roleId) {
+        RoleResourceExample rre = new RoleResourceExample();
+        rre.createCriteria().andRoleIdEqualTo(roleId);
+        List<RoleResource> rrs = roleResourceMapper.selectByExample(rre);
+        List<String> resourcesIds = new ArrayList<>();
+        for (RoleResource rr : rrs) {
+            resourcesIds.add(rr.getResourceId());
+        }
+        return resourcesIds;
     }
 }
