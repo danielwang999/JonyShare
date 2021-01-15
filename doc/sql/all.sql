@@ -230,6 +230,7 @@ insert into `role` values ('00000000', '系统管理员', '管理用户、角色
 insert into `role` values ('00000001', '开发', '维护资源');
 insert into `role` values ('00000002', '业务管理员', '负责业务管理');
 
+-- 角色资源表
 drop table if exists `role_resource`;
 create table `role_resource` (
  `id` char(8) not null default '' comment 'id',
@@ -247,6 +248,17 @@ insert into `role_resource` values ('00000005', '00000000', '0102');
 insert into `role_resource` values ('00000006', '00000000', '010201');
 insert into `role_resource` values ('00000007', '00000000', '0103');
 insert into `role_resource` values ('00000008', '00000000', '010301');
+
+-- 角色用户表
+drop table if exists `role_user`;
+create table `role_user` (
+  `id` char(8) not null default '' comment 'id',
+  `role_id` char(8) not null comment '角色|id',
+  `user_id` char(8) not null comment '用户|id',
+  primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='角色用户关联';
+
+insert into `role_user` values ('00000000', '00000000', '10000000');
 
 
 

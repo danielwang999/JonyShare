@@ -349,7 +349,26 @@
        * 加载选中用户所拥有的角色
        */
       loadUserRole() {
-
+        Loading.show();
+        let _this = this;
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/roleUser/findRoles/'
+          + _this.user.id).then((response)=>{
+          Loading.hide();
+          let resp = response.data;
+          let userRoleIds = resp.content;
+          if (resp.success) {
+            // 根据加载到查出来的roleIds，到【所有角色数组：roles】中查找角色对象，用于列表显示
+            for (let i = 0; i < userRoleIds.length; i++) {
+              for (let j = 0; j < _this.roles.length; j++) {
+                if (userRoleIds[i] === _this.roles[j].id) {
+                  _this.userRoles.push(_this.roles[j]);
+                }
+              }
+            }
+          } else {
+            Toast.warning(resp.message)
+          }
+        })
       },
 
 
