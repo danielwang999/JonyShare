@@ -136,7 +136,7 @@
                   <tr v-for="role in roles">
                     <td>{{role.name}}</td>
                     <td class="text-right">
-                      <a v-on:click="addUser(user)" href="javascript:;" class="">
+                      <a v-on:click="addRole(role)" href="javascript:;" class="">
                         <i class="ace-icon fa fa-arrow-circle-right blue"></i>
                       </a>
                     </td>
@@ -150,7 +150,7 @@
                   <tr v-for="role in userRoles">
                     <td>{{role.name}}</td>
                     <td class="text-right">
-                      <a v-on:click="deleteUser(user)" href="javascript:;" class="">
+                      <a v-on:click="deleteRole(role)" href="javascript:;" class="">
                         <i class="ace-icon fa fa-trash blue"></i>
                       </a>
                     </td>
@@ -165,7 +165,7 @@
               <i class="ace-icon fa fa-times"></i>
               关闭
             </button>
-            <button type="button" class="btn btn-white btn-info btn-round" v-on:click="saveUser()">
+            <button type="button" class="btn btn-white btn-info btn-round" v-on:click="saveUserRoles()">
               <i class="ace-icon fa fa-plus blue"></i>
               保存
             </button>
@@ -351,6 +351,7 @@
       loadUserRole() {
         Loading.show();
         let _this = this;
+        _this.userRoles = [];
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/roleUser/findRoles/'
           + _this.user.id).then((response)=>{
           Loading.hide();
@@ -371,7 +372,48 @@
         })
       },
 
+      addRole(role){
+        let _this = this;
+        let userRoles = _this.userRoles;
+        for (let i = 0; i < userRoles.length; i++) {
+          if (userRoles[i] === role){
+            // 已经在userRoles列表里面了。直接返回
+            return;
+          }
+        }
+        // 不再userRoles列表里面，加入列表
+        userRoles.push(role);
+      },
 
+      deleteRole(role){
+        let _this = this;
+        Tool.removeObj(_this.userRoles, role);
+      },
+
+      saveUserRoles(){
+        // 保存时时要用到roleId和userId
+        let _this = this;
+        let roles = _this.userRoles;
+        let roleIds = [];
+        // 转换为roleIds
+        for (let i = 0; i < roles.length; i++) {
+          roleIds.push(roles[i].id);
+        }
+
+        // 请求后端
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/roleUser/saveUserRoles', {
+          userId: _this.user.id,
+          roleIds: roleIds,
+        }).then((response)=>{
+          console.log("保存角色用户结果：", response);
+          let resp = response.data;
+          if (resp.success) {
+            Toast.success("保存成功!");
+          } else {
+            Toast.warning(resp.message);
+          }
+        })
+      },
     }
   }
 </script>

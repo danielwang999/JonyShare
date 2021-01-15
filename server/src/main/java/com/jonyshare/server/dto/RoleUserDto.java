@@ -1,6 +1,8 @@
 package com.jonyshare.server.dto;
 
 
+import java.util.List;
+
 public class RoleUserDto {
 
     /**
@@ -17,6 +19,19 @@ public class RoleUserDto {
      * 用户|id
      */
     private String userId;
+
+    /**
+     * 用户对应的所有roleId
+     */
+    private List<String> roleIds;
+
+    public List<String> getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(List<String> roleIds) {
+        this.roleIds = roleIds;
+    }
 
     public String getId() {
         return id;
@@ -45,15 +60,12 @@ public class RoleUserDto {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", roleId=").append(roleId);
-        sb.append(", userId=").append(userId);
-        sb.append("]");
-        return sb.toString();
+        return "RoleUserDto{" +
+                "id='" + id + '\'' +
+                ", roleId='" + roleId + '\'' +
+                ", userId='" + userId + '\'' +
+                ", roleIds=" + roleIds +
+                '}';
     }
 
 }

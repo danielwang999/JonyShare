@@ -8,6 +8,7 @@ import com.jonyshare.server.util.ValidatorUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 @RestController
@@ -65,6 +66,15 @@ public class RoleUserController {
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(roleUserService.findRoles(userId));
         return responseDto;
+    }
+
+    @PostMapping("/saveUserRoles")
+    public ResponseDto saveUserRoles(@RequestBody RoleUserDto roleUserDto) {
+        String userId = roleUserDto.getUserId();
+        List<String> roleIds = roleUserDto.getRoleIds();
+        ResponseDto responseDto = new ResponseDto();
+        roleUserService.saveUserRoles(userId, roleIds);
+        return new ResponseDto();
     }
 
 }

@@ -10,6 +10,7 @@ import com.jonyshare.server.mapper.RoleUserMapper;
 import com.jonyshare.server.util.CopyUtil;
 import com.jonyshare.server.util.UuidUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -70,6 +71,11 @@ public class RoleUserService {
     }
 
 
+    /**
+     * 根据userId找出其下所拥有的角色，返回roleIds字符串数组
+     * @param userId
+     * @return
+     */
     public List<String> findRoles(String userId) {
         RoleUserExample rue = new RoleUserExample();
         rue.createCriteria().andUserIdEqualTo(userId);
@@ -79,5 +85,20 @@ public class RoleUserService {
             userRoleIds.add(roleUser.getRoleId());
         }
         return userRoleIds;
+    }
+
+    @Transactional
+    public void saveUserRoles(String userId, List<String> roleIds) {
+        RoleUserExample rue = new RoleUserExample();
+        rue.createCriteria().andUserIdEqualTo(userId);
+        roleUserMapper.deleteByExample(rue);
+
+        for (String roleId : roleIds) {
+            RoleUser roleUser = new RoleUser();
+            roleUser.setId(UuidUtil.getShortUuid());
+            roleUser.setUserId(userId);
+            roleUser.setRoleId(roleId);
+            roleUserMapper.insert(roleUser);
+        }
     }
 }
