@@ -361,7 +361,7 @@
             <b class="arrow"></b>
           </li>
           <!-- 系统管理导航 -->
-          <li class="active open">
+          <li class="active open" v-show="hasResource('01')">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-desktop"></i>
               <span class="menu-text">
@@ -373,7 +373,7 @@
             <b class="arrow"></b>
 
             <ul class="submenu">
-              <li class="active" id="system-user-sidebar">
+              <li class="active" v-show="hasResource('0101')" id="system-user-sidebar">
                 <router-link to="/system/user" class="dropdown-toggle">
                   <i class="menu-icon fa fa-caret-right"></i>
                   用户管理
@@ -381,7 +381,7 @@
                 </router-link>
               </li>
 
-              <li class="active" id="system-resource-sidebar">
+              <li class="active" v-show="hasResource('0102')" id="system-resource-sidebar">
                 <router-link to="/system/resource" class="dropdown-toggle">
                   <i class="menu-icon fa fa-caret-right"></i>
                   资源管理
@@ -389,7 +389,7 @@
                 </router-link>
               </li>
 
-              <li class="active" id="system-role-sidebar">
+              <li class="active" v-show="hasResource('0103')" id="system-role-sidebar">
                 <router-link to="/system/role" class="dropdown-toggle">
                   <i class="menu-icon fa fa-caret-right"></i>
                   角色管理
@@ -413,7 +413,7 @@
             <b class="arrow"></b>
 
             <ul class="submenu">
-              <li class="active" id="business-category-sidebar">
+              <li class="active" v-show="hasResource('02')" id="business-category-sidebar">
                 <router-link to="/business/category" class="dropdown-toggle">
                   <i class="menu-icon fa fa-caret-right"></i>
                   分类管理
@@ -421,7 +421,7 @@
                 </router-link>
               </li>
 
-              <li class="active" id="business-course-sidebar">
+              <li class="active" v-show="hasResource('0201')" id="business-course-sidebar">
                 <router-link to="/business/course" class="dropdown-toggle">
                   <i class="menu-icon fa fa-caret-right"></i>
                   课程管理
@@ -430,7 +430,7 @@
                 <b class="arrow"></b>
               </li>
 
-              <li class="active" id="business-teacher-sidebar">
+              <li class="active" v-show="hasResource('0202')" id="business-teacher-sidebar">
                 <router-link to="/business/teacher" class="dropdown-toggle">
                   <i class="menu-icon fa fa-caret-right"></i>
                   讲师管理
@@ -441,7 +441,7 @@
             </ul>
           </li>
 
-          <li class="active open">
+          <li class="active open" v-show="hasResource('03')">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-desktop"></i>
               <span class="menu-text">
@@ -453,7 +453,7 @@
             <b class="arrow"></b>
 
             <ul class="submenu">
-              <li class="active" id="file-file-sidebar">
+              <li class="active" v-show="hasResource('0301')" id="file-file-sidebar">
                 <router-link to="/file/file" class="dropdown-toggle">
                   <i class="menu-icon fa fa-caret-right"></i>
                   文件列表
@@ -589,6 +589,14 @@
             Toast.warning(resp.message)
           }
         });
+      },
+
+      /**
+       * 查找是否有权限
+       * @param id
+       */
+      hasResource(id) {
+        return Tool.hasResource(id);
       },
     }
   }
