@@ -1,7 +1,6 @@
 package com.jonyshare.system.controller.admin;
 
 import com.jonyshare.server.dto.PageDto;
-import com.jonyshare.server.dto.ResourceDto;
 import com.jonyshare.server.dto.ResponseDto;
 import com.jonyshare.server.service.ResourceService;
 import com.jonyshare.server.util.ValidatorUtil;
@@ -43,19 +42,16 @@ public class ResourceController {
 
     /**
      * 保存，包括新增和修改
-     * @param resourceDto
+     * @param jsonStr
      * @return
      */
     @PostMapping("/save")
-    public ResponseDto save(@RequestBody ResourceDto resourceDto) {
+    public ResponseDto save(@RequestBody String jsonStr) {
         // 保存校验
-        ValidatorUtil.require(resourceDto.getName(), "名称");
-        ValidatorUtil.length(resourceDto.getName(), "名称", 1, 100);
-        ValidatorUtil.length(resourceDto.getPage(), "页面", 1, 50);
-        ValidatorUtil.length(resourceDto.getRequest(), "请求", 1, 200);
+        ValidatorUtil.require(jsonStr, "资源");
+
         ResponseDto responseDto = new ResponseDto();
-        resourceService.save(resourceDto);
-        responseDto.setContent(resourceDto);
+        resourceService.saveJson(jsonStr);
         return responseDto;
     }
 

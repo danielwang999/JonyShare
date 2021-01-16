@@ -12,6 +12,21 @@
       </button>
     </p>
 
+    <div class="row">
+      <div class="col-md-6">
+        <textarea id="resource-textarea" class="form-control" v-model="resourceStr" name="resource" rows="10"></textarea>
+
+        <br>
+        <button id="save-btn" type="button" class="btn btn-primary" v-on:click="save()">
+          保存
+        </button>
+      </div>
+      <div class="col-md-6">
+        <ul id="tree" class="ztree"></ul>
+      </div>
+    </div>
+
+
     <div>
       <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
     </div>
@@ -49,54 +64,8 @@
       </tbody>
     </table>
 
-    <!--  树形展示资源列表  -->
-    <div class="col-md-6">
-      <ul id="tree" class="ztree"></ul>
-    </div>
 
 
-    <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">表单</h4>
-          </div>
-          <div class="modal-body">
-            <form class="form-horizontal">
-              <div class="form-group">
-                <label class="col-sm-2 control-label">名称</label>
-                <div class="col-sm-10">
-                  <input v-model="resource.name" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">页面</label>
-                <div class="col-sm-10">
-                  <input v-model="resource.page" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">请求</label>
-                <div class="col-sm-10">
-                  <input v-model="resource.request" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">父id</label>
-                <div class="col-sm-10">
-                  <input v-model="resource.parent" class="form-control">
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-            <button v-on:click="save()" type="button" class="btn btn-primary">保存</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
   </div>
 </template>
 
@@ -109,6 +78,7 @@
       return {
         resource: {},
         resources: [],
+        resourceStr: "",
         tree: {},
       }
     },
@@ -180,17 +150,14 @@
         let _this = this;
 
         // 保存校验
-        if (1 != 1
-          || !Validator.require(_this.resource.name, "名称")
-          || !Validator.length(_this.resource.name, "名称", 1, 100)
-          || !Validator.length(_this.resource.page, "页面", 1, 50)
-          || !Validator.length(_this.resource.request, "请求", 1, 200)
-        ) {
+        if (Tool.isEmpty(_this.resourceStr)) {
+          Toast.warning("资源不能为空！");
           return;
         }
+        let json = JSON.parse(_this.resourceStr);
 
         Loading.show();
-        _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/resource/save', _this.resource).then((response)=>{
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/resource/save', json).then((response)=>{
           Loading.hide();
           let resp = response.data;
           if (resp.success) {
