@@ -400,7 +400,7 @@
           </li>
 
           <!-- 业务管理导航 -->
-          <li class="active open">
+          <li class="active open" v-show="hasResource('02')">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-desktop"></i>
               <span class="menu-text">
@@ -413,7 +413,7 @@
             <b class="arrow"></b>
 
             <ul class="submenu">
-              <li class="active" v-show="hasResource('02')" id="business-category-sidebar">
+              <li class="active" v-show="hasResource('0201')" id="business-category-sidebar">
                 <router-link to="/business/category" class="dropdown-toggle">
                   <i class="menu-icon fa fa-caret-right"></i>
                   分类管理
@@ -535,6 +535,10 @@
       // 初始化
       _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
 
+      if (!_this.hasResourceRouter(_this.$route.name)) {
+        _this.$router.push("/login");
+      }
+
       // 从SessionStorage里面获得登录用户信息
       _this.loginUser = Tool.getLoginUser();
     },
@@ -546,10 +550,10 @@
           console.log("---->页面跳转：", val, oldVal);
           let _this = this;
 
-          // if (!_this.hasResourceRouter(val.name)) {
-          //   _this.$router.push("/login");
-          //   return;
-          // }
+          if (!_this.hasResourceRouter(val.name)) {
+            _this.$router.push("/login");
+            return;
+          }
 
           _this.$nextTick(function(){  //页面加载完成后执行
             _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
@@ -597,6 +601,24 @@
        */
       hasResource(id) {
         return Tool.hasResource(id);
+      },
+
+      /**
+       * 查找是否有路由跳转权限
+       * @param router
+       */
+      hasResourceRouter(router) {
+        let _this = this;
+        let resources = Tool.getLoginUser().resources;
+        if (Tool.isEmpty(resources)) {
+          return false;
+        }
+        for (let i = 0; i < resources.length; i++) {
+          if (router === resources[i].page) {
+            return true;
+          }
+        }
+        return false;
       },
     }
   }
