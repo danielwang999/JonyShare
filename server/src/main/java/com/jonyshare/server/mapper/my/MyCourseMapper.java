@@ -1,7 +1,11 @@
 package com.jonyshare.server.mapper.my;
 
+import com.jonyshare.server.dto.CourseDto;
+import com.jonyshare.server.dto.CoursePageDto;
 import com.jonyshare.server.dto.SortDto;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author WangQiang
@@ -15,4 +19,6 @@ public interface MyCourseMapper {
     void moveSortsForward(SortDto sortDto);
 
     void moveSortsBackward(SortDto sortDto);
+
+    List<CourseDto> list(@Param("pageDto") CoursePageDto pageDto);
 }

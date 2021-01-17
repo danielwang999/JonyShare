@@ -1,14 +1,14 @@
 package com.jonyshare.business.controller.web;
 
 import com.jonyshare.server.dto.CourseDto;
+import com.jonyshare.server.dto.CoursePageDto;
 import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.dto.ResponseDto;
+import com.jonyshare.server.enums.CourseStatusEnum;
 import com.jonyshare.server.service.CourseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -37,17 +37,18 @@ public class CourseController {
         return responseDto;
     }
 
-//    /**
-//     * 列表查询
-//     */
-//    @PostMapping("/list")
-//    public ResponseDto list(@RequestBody CoursePageDto pageDto) {
-//        ResponseDto responseDto = new ResponseDto();
-//        pageDto.setStatus(CourseStatusEnum.PUBLISH.getCode());
-//        courseService.list(pageDto);
-//        responseDto.setContent(pageDto);
-//        return responseDto;
-//    }
+    /**
+     * 列表查询
+     */
+    @PostMapping("/list")
+    public ResponseDto list(@RequestBody CoursePageDto pageDto) {
+        ResponseDto responseDto = new ResponseDto();
+        // 只显示已发布的
+        pageDto.setStatus(CourseStatusEnum.PUBLISH.getCode());
+        courseService.list(pageDto);
+        responseDto.setContent(pageDto);
+        return responseDto;
+    }
 
 //    @GetMapping("/find/{id}")
 //    public ResponseDto findCourse(@PathVariable String id) {

@@ -5,10 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.jonyshare.server.domain.Course;
 import com.jonyshare.server.domain.CourseContent;
 import com.jonyshare.server.domain.CourseExample;
-import com.jonyshare.server.dto.CourseContentDto;
-import com.jonyshare.server.dto.CourseDto;
-import com.jonyshare.server.dto.PageDto;
-import com.jonyshare.server.dto.SortDto;
+import com.jonyshare.server.dto.*;
 import com.jonyshare.server.enums.CourseStatusEnum;
 import com.jonyshare.server.mapper.CourseContentMapper;
 import com.jonyshare.server.mapper.CourseMapper;
@@ -42,14 +39,11 @@ public class CourseService {
     /**
      * 列表查询
      */
-    public void list(PageDto pageDto) {
+    public void list(CoursePageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
-        CourseExample courseExample = new CourseExample();
-        courseExample.setOrderByClause("sort asc");
-        List<Course> courseList = courseMapper.selectByExample(courseExample);
-        PageInfo<Course> pageInfo = new PageInfo<>(courseList);
+        List<CourseDto> courseDtoList = myCourseMapper.list(pageDto);
+        PageInfo<CourseDto> pageInfo = new PageInfo<>(courseDtoList);
         pageDto.setTotal(pageInfo.getTotal());
-        List<CourseDto> courseDtoList = CopyUtil.copyList(courseList, CourseDto.class);
         pageDto.setList(courseDtoList);
     }
 

@@ -23,4 +23,23 @@
         ]]>
     </update>
 
+    <!-- web端【全部课程】页面，查询课程列表 -->
+    <select id="list" resultType="com.jonyshare.server.dto.CourseDto">
+        select c.id, c.name, c.summary, time, price, image, level,
+        charge, status, enroll, sort, created_at as createdAt,
+        updated_at as updatedAt, teacher_id as teacherId
+        from `course` c
+        <if test="pageDto.categoryId != null and pageDto.categoryId != ''">
+            , course_category cc
+        </if>
+        where 1 = 1
+        <if test="pageDto.categoryId != null and pageDto.categoryId != ''">
+            and c.id = cc.course_id
+            and cc.category_id = #{pageDto.categoryId}
+        </if>
+        <if test="pageDto.status != null and pageDto.status != ''">
+            and c.status = #{pageDto.status}
+        </if>
+        order by c.sort asc
+    </select>
 </mapper>
