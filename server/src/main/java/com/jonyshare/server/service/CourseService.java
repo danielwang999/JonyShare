@@ -9,6 +9,7 @@ import com.jonyshare.server.dto.CourseContentDto;
 import com.jonyshare.server.dto.CourseDto;
 import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.dto.SortDto;
+import com.jonyshare.server.enums.CourseStatusEnum;
 import com.jonyshare.server.mapper.CourseContentMapper;
 import com.jonyshare.server.mapper.CourseMapper;
 import com.jonyshare.server.mapper.my.MyCourseMapper;
@@ -50,6 +51,18 @@ public class CourseService {
         pageDto.setTotal(pageInfo.getTotal());
         List<CourseDto> courseDtoList = CopyUtil.copyList(courseList, CourseDto.class);
         pageDto.setList(courseDtoList);
+    }
+
+    /**
+     * 新课列表查询，只查询已发布的，按创建日期倒序
+     */
+    public List<CourseDto> listNew(PageDto pageDto) {
+        PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
+        CourseExample courseExample = new CourseExample();
+        courseExample.createCriteria().andStatusEqualTo(CourseStatusEnum.PUBLISH.getCode());
+        courseExample.setOrderByClause("created_at desc");
+        List<Course> courseList = courseMapper.selectByExample(courseExample);
+        return CopyUtil.copyList(courseList, CourseDto.class);
     }
 
     /**
