@@ -381,6 +381,14 @@
                 </router-link>
               </li>
 
+              <li class="active" v-show="hasResource('0104')" id="system-member-sidebar">
+                <router-link to="/system/member" class="dropdown-toggle">
+                  <i class="menu-icon fa fa-caret-right"></i>
+                  会员管理
+                  <b class="arrow fa fa-angle-down"></b>
+                </router-link>
+              </li>
+
               <li class="active" v-show="hasResource('0102')" id="system-resource-sidebar">
                 <router-link to="/system/resource" class="dropdown-toggle">
                   <i class="menu-icon fa fa-caret-right"></i>
