@@ -80,4 +80,13 @@ public class TeacherService {
     }
 
 
+    /**
+     * 根据teacherId查找Teacher，返回TeacherDto
+     * @param teacherId
+     * @return
+     */
+    public TeacherDto findById(String teacherId) {
+        Teacher teacher = teacherMapper.selectByPrimaryKey(teacherId);
+        return CopyUtil.copy(teacher, TeacherDto.class);
+    }
 }

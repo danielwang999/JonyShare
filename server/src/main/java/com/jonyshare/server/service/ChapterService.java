@@ -7,16 +7,13 @@ import com.jonyshare.server.domain.Chapter;
 import com.jonyshare.server.domain.ChapterExample;
 import com.jonyshare.server.dto.ChapterDto;
 import com.jonyshare.server.dto.ChapterPageDto;
-import com.jonyshare.server.dto.PageDto;
 import com.jonyshare.server.mapper.ChapterMapper;
 import com.jonyshare.server.util.CopyUtil;
 import com.jonyshare.server.util.UuidUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -78,5 +75,17 @@ public class ChapterService {
 
     private void update(Chapter chapter) {
         chapterMapper.updateByPrimaryKey(chapter);
+    }
+
+    /**
+     * 根据courseId，查出此课程下所有的大章
+     * @param id
+     * @return
+     */
+    public List<ChapterDto> listByCourse(String id) {
+        ChapterExample ce = new ChapterExample();
+        ce.createCriteria().andCourseIdEqualTo(id);
+        List<Chapter> chapters = chapterMapper.selectByExample(ce);
+        return CopyUtil.copyList(chapters, ChapterDto.class);
     }
 }
