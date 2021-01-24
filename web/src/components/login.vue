@@ -354,7 +354,7 @@
       loadImageCode: function () {
         let _this = this;
         _this.imageCodeToken = Tool.uuid(8);
-        $('#image-code').attr('src', process.env.VUE_APP_SERVER + '/system/web/kaptcha/image-code/' + _this.imageCodeToken);
+        $('#image-code').attr('src', process.env.VUE_APP_SERVER + '/system/kaptcha/image-code/' + _this.imageCodeToken);
       },
 
       /**

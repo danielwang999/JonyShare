@@ -80,7 +80,7 @@
 
       logout () {
         let _this = this;
-        _this.$ajax.get(process.env.VUE_APP_SERVER + '/business/web/member/logout/' + _this.loginMember.token).then((response)=>{
+        _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/web/member/logout/' + _this.loginMember.token).then((response)=>{
           let resp = response.data;
           if (resp.success) {
             Tool.setLoginMember(null);

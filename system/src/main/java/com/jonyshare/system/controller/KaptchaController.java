@@ -21,9 +21,9 @@ import java.io.ByteArrayOutputStream;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/admin/kaptcha")
+@RequestMapping("/kaptcha")
 public class KaptchaController {
-    public static final String BUSINESS_NAME = "图片验证码";
+    public static final String BUSINESS_NAME = "后台图片验证码";
     private static final Logger LOG = LoggerFactory.getLogger(KaptchaController.class);
 
     @Qualifier("getDefaultKaptcha")

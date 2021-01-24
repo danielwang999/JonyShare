@@ -1,7 +1,8 @@
 package com.jonyshare.server.dto;
 
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
 
 public class MemberDto {
 
@@ -35,6 +36,21 @@ public class MemberDto {
      */
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date registerTime;
+
+    /**
+     * 图片验证码
+     */
+    private String imageCode;
+
+    /**
+     * 图片验证码token
+     */
+    private String imageCodeToken;
+
+    /**
+     * 短信验证码
+     */
+    private String smsCode;
 
     public String getId() {
         return id;
@@ -84,21 +100,43 @@ public class MemberDto {
         this.registerTime = registerTime;
     }
 
+    public String getImageCode() {
+        return imageCode;
+    }
+
+    public void setImageCode(String imageCode) {
+        this.imageCode = imageCode;
+    }
+
+    public String getImageCodeToken() {
+        return imageCodeToken;
+    }
+
+    public void setImageCodeToken(String imageCodeToken) {
+        this.imageCodeToken = imageCodeToken;
+    }
+
+    public String getSmsCode() {
+        return smsCode;
+    }
+
+    public void setSmsCode(String smsCode) {
+        this.smsCode = smsCode;
+    }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", mobile=").append(mobile);
-        sb.append(", password=").append(password);
-        sb.append(", name=").append(name);
-        sb.append(", photo=").append(photo);
+        final StringBuffer sb = new StringBuffer("MemberDto{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", mobile='").append(mobile).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", photo='").append(photo).append('\'');
         sb.append(", registerTime=").append(registerTime);
-        sb.append("]");
+        sb.append(", imageCode='").append(imageCode).append('\'');
+        sb.append(", imageCodeToken='").append(imageCodeToken).append('\'');
+        sb.append(", smsCode='").append(smsCode).append('\'');
+        sb.append('}');
         return sb.toString();
     }
-
 }
