@@ -290,7 +290,7 @@
         _this.memberRegister.password = hex_md5(_this.memberRegister.passwordOriginal + KEY);
 
         // 调服务端注册接口
-        _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/web/member/register', _this.memberRegister).then((response) => {
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/web/member/register', _this.memberRegister).then((response) => {
           let resp = response.data;
           if (resp.success) {
             Toast.success("注册成功");
@@ -314,7 +314,7 @@
 
         _this.member.imageCodeToken = _this.imageCodeToken;
 
-        _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/web/member/login', _this.member).then((response)=>{
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/web/member/login', _this.member).then((response)=>{
           let resp = response.data;
           if (resp.success) {
             console.log("登录成功：", resp.content);
@@ -354,7 +354,7 @@
       loadImageCode: function () {
         let _this = this;
         _this.imageCodeToken = Tool.uuid(8);
-        $('#image-code').attr('src', process.env.VUE_APP_SERVER + '/business/web/kaptcha/image-code/' + _this.imageCodeToken);
+        $('#image-code').attr('src', process.env.VUE_APP_SERVER + '/system/web/kaptcha/image-code/' + _this.imageCodeToken);
       },
 
       /**
@@ -372,7 +372,7 @@
           use: SMS_USE.REGISTER.key
         };
 
-        _this.$ajax.get(process.env.VUE_APP_SERVER + '/business/web/member/is-mobile-exist/' + _this.memberRegister.mobile).then((res)=>{
+        _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/web/member/is-mobile-exist/' + _this.memberRegister.mobile).then((res)=>{
           let response = res.data;
           if (response.success) {
             Toast.warning("手机号已被注册");
@@ -390,7 +390,7 @@
         let _this = this;
 
         // 调服务端发短信接口
-        _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/web/sms/send', sms).then((res)=> {
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/web/sms/send', sms).then((res)=> {
           let response = res.data;
           if (response.success) {
             Toast.success("短信已发送");
@@ -438,7 +438,7 @@
           use: SMS_USE.FORGET.key
         };
 
-        _this.$ajax.get(process.env.VUE_APP_SERVER + '/business/web/member/is-mobile-exist/' + _this.memberForget.mobile).then((res)=>{
+        _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/web/member/is-mobile-exist/' + _this.memberForget.mobile).then((res)=>{
           let response = res.data;
           if (response.success) {
             _this.forgetMobileValidate = true;
@@ -466,7 +466,7 @@
         _this.memberForget.password = hex_md5(_this.memberForget.passwordOriginal + KEY);
 
         // 调服务端密码重置接口
-        _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/web/member/reset-password', _this.memberForget).then((res)=>{
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/web/member/reset-password', _this.memberForget).then((res)=>{
           let response = res.data;
           if (response.success) {
             Toast.success("密码重置成功");
