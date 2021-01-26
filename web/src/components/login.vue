@@ -47,6 +47,7 @@
                      id="register-mobile" v-model="memberRegister.mobile"
                      class="form-control" placeholder="手机号">
               <span v-show="registerMobileValidate === false" class="text-danger">手机号11位数字，且不能重复</span>
+              <span v-show="registerMobileExistValidate === false" class="text-danger">手机号已存在，不能重复</span>
             </div>
 <!--            <div class="form-group">-->
 <!--              <div class="input-group">-->
@@ -101,6 +102,7 @@
                      id="forget-mobile" v-model="memberForget.mobile"
                      class="form-control" placeholder="手机号">
               <span v-show="forgetMobileValidate === false" class="text-danger">手机号11位数字，且必须已注册</span>
+              <span v-show="forgetMobileExistValidate === false" class="text-danger">手机号不存在</span>
             </div>
 <!--            <div class="form-group">-->
 <!--              <div class="input-group">-->
@@ -168,12 +170,15 @@
         // 注册框显示错误信息
         registerMobileValidate: null,
         registerMobileCodeValidate: null,
+        registerMobileExistValidate: null,
         registerPasswordValidate: null,
         registerNameValidate: null,
         registerConfirmPasswordValidate: null,
 
+
         // 忘记密码框显示错误信息
         forgetMobileValidate: null,
+        forgetMobileExistValidate: null,
         forgetMobileCodeValidate: null,
         forgetPasswordValidate: null,
         forgetConfirmPasswordValidate: null,
@@ -182,8 +187,10 @@
     computed: {
       registerMobileValidateClass: function () {
         return {
-          'border-success': this.registerMobileValidate === true,
-          'border-danger': this.registerMobileValidate === false,
+          'border-success': this.registerMobileValidate === true
+            && this.registerMobileExistValidate === true,
+          'border-danger': this.registerMobileValidate === false
+            || this.registerMobileExistValidate === false,
         }
       },
       registerMobileCodeValidateClass: function () {
@@ -212,8 +219,10 @@
       },
       forgetMobileValidateClass: function () {
         return {
-          'border-success': this.forgetMobileValidate === true,
-          'border-danger': this.forgetMobileValidate === false,
+          'border-success': this.forgetMobileValidate === true
+            && this.forgetMobileExistValidate === true,
+          'border-danger': this.forgetMobileValidate === false
+            || this.forgetMobileExistValidate === false,
         }
       },
       forgetMobileCodeValidateClass: function () {
@@ -279,7 +288,6 @@
         // 提交之前，先校验所有输入框
         // 注意：当有一个文本框校验为false时，其它不校验
         let validateResult = _this.onRegisterMobileBlur() &&
-          _this.onRegisterMobileCodeBlur() &&
           _this.onRegisterNameBlur() &&
           _this.onRegisterPasswordBlur() &&
           _this.onRegisterConfirmPasswordBlur();
@@ -484,7 +492,17 @@
       onRegisterMobileBlur () {
         let _this = this;
         _this.registerMobileValidate = Pattern.validateMobile(_this.memberRegister.mobile);
-        return _this.registerMobileValidate;
+        // 判断手机号是否存在
+        _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/web/member/is-mobile-exist/' + _this.memberRegister.mobile).then((res)=>{
+          let response = res.data;
+          if (response.success) {
+            Toast.warning("手机号已存在");
+            _this.registerMobileExistValidate = false;
+          } else {
+            _this.registerMobileExistValidate = true;
+          }
+        });
+        return _this.registerMobileValidate && _this.registerMobileExistValidate;
       },
 
       onRegisterMobileCodeBlur () {
@@ -518,7 +536,20 @@
 
       onForgetMobileBlur () {
         let _this = this;
-        return _this.forgetMobileValidate = Pattern.validateMobile(_this.memberForget.mobile);
+        _this.forgetMobileValidate = Pattern.validateMobile(_this.memberForget.mobile);
+
+        // 判断手机号是否存在
+        _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/web/member/is-mobile-exist/' + _this.memberForget.mobile).then((res)=>{
+          let response = res.data;
+          if (response.success) {
+            _this.forgetMobileExistValidate = true;
+          } else {
+            Toast.warning("手机号不存在");
+            _this.forgetMobileExistValidate = false;
+          }
+        });
+
+        return _this.forgetMobileValidate && _this.registerMobileExistValidate;
       },
 
       onForgetMobileCodeBlur () {

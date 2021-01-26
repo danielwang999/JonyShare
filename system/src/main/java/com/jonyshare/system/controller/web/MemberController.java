@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.jonyshare.server.dto.LoginMemberDto;
 import com.jonyshare.server.dto.MemberDto;
 import com.jonyshare.server.dto.ResponseDto;
+import com.jonyshare.server.exception.BusinessException;
 import com.jonyshare.server.service.MemberService;
 import com.jonyshare.server.util.UuidUtil;
 import com.jonyshare.server.util.ValidatorUtil;
@@ -113,18 +114,18 @@ public class MemberController {
      * 校验手机号是否存在
      * 存在则success=true，不存在则success=false
      */
-//    @GetMapping(value = "/is-mobile-exist/{mobile}")
-//    public ResponseDto isMobileExist(@PathVariable(value = "mobile") String mobile) throws BusinessException {
-//        LOG.info("查询手机号是否存在开始");
-//        ResponseDto responseDto = new ResponseDto();
-//        MemberDto memberDto = memberService.findByMobile(mobile);
-//        if (memberDto == null) {
-//            responseDto.setSuccess(false);
-//        } else {
-//            responseDto.setSuccess(true);
-//        }
-//        return responseDto;
-//    }
+    @GetMapping(value = "/is-mobile-exist/{mobile}")
+    public ResponseDto isMobileExist(@PathVariable(value = "mobile") String mobile) throws BusinessException {
+        LOG.info("查询手机号是否存在开始");
+        ResponseDto responseDto = new ResponseDto();
+        MemberDto memberDto = memberService.findByMobile(mobile);
+        if (memberDto == null) {
+            responseDto.setSuccess(false);
+        } else {
+            responseDto.setSuccess(true);
+        }
+        return responseDto;
+    }
 
 //    @PostMapping("/reset-password")
 //    public ResponseDto resetPassword(@RequestBody MemberDto memberDto) throws BusinessException {
