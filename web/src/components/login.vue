@@ -48,20 +48,20 @@
                      class="form-control" placeholder="手机号">
               <span v-show="registerMobileValidate === false" class="text-danger">手机号11位数字，且不能重复</span>
             </div>
-            <div class="form-group">
-              <div class="input-group">
-                <input v-on:blur="onRegisterMobileCodeBlur()"
-                       v-bind:class="registerMobileCodeValidateClass"
-                       id="register-mobile-code" class="form-control"
-                       placeholder="手机验证码" v-model="memberRegister.smsCode">
-                <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" id="register-send-code-btn"
-                          v-on:click="sendSmsForRegister()">发送验证码
-                  </button>
-                </div>
-              </div>
-              <span v-show="registerMobileCodeValidate === false" class="text-danger">请输入短信6位验证码</span>
-            </div>
+<!--            <div class="form-group">-->
+<!--              <div class="input-group">-->
+<!--                <input v-on:blur="onRegisterMobileCodeBlur()"-->
+<!--                       v-bind:class="registerMobileCodeValidateClass"-->
+<!--                       id="register-mobile-code" class="form-control"-->
+<!--                       placeholder="手机验证码" v-model="memberRegister.smsCode">-->
+<!--                <div class="input-group-append">-->
+<!--                  <button class="btn btn-outline-secondary" id="register-send-code-btn"-->
+<!--                          v-on:click="sendSmsForRegister()">发送验证码-->
+<!--                  </button>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <span v-show="registerMobileCodeValidate === false" class="text-danger">请输入短信6位验证码</span>-->
+<!--            </div>-->
             <div class="form-group">
               <input v-on:blur="onRegisterNameBlur()"
                      v-bind:class="registerNameValidateClass"
@@ -102,21 +102,21 @@
                      class="form-control" placeholder="手机号">
               <span v-show="forgetMobileValidate === false" class="text-danger">手机号11位数字，且必须已注册</span>
             </div>
-            <div class="form-group">
-              <div class="input-group">
-                <input v-on:blur="onForgetMobileCodeBlur()"
-                       v-bind:class="forgetMobileCodeValidateClass"
-                       id="forget-mobile-code" class="form-control"
-                       placeholder="手机验证码" v-model="memberForget.smsCode">
-                <div class="input-group-append">
-                  <button v-on:click="sendSmsForForget()"
-                          class="btn btn-outline-secondary" id="forget-send-code-btn">
-                    发送验证码
-                  </button>
-                </div>
-              </div>
-              <span v-show="forgetMobileCodeValidate === false" class="text-danger">请输入短信6位验证码</span>
-            </div>
+<!--            <div class="form-group">-->
+<!--              <div class="input-group">-->
+<!--                <input v-on:blur="onForgetMobileCodeBlur()"-->
+<!--                       v-bind:class="forgetMobileCodeValidateClass"-->
+<!--                       id="forget-mobile-code" class="form-control"-->
+<!--                       placeholder="手机验证码" v-model="memberForget.smsCode">-->
+<!--                <div class="input-group-append">-->
+<!--                  <button v-on:click="sendSmsForForget()"-->
+<!--                          class="btn btn-outline-secondary" id="forget-send-code-btn">-->
+<!--                    发送验证码-->
+<!--                  </button>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <span v-show="forgetMobileCodeValidate === false" class="text-danger">请输入短信6位验证码</span>-->
+<!--            </div>-->
             <div class="form-group">
               <input v-on:blur="onForgetPasswordBlur()"
                      v-bind:class="forgetPasswordValidateClass"
