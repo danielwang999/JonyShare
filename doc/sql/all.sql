@@ -273,9 +273,19 @@ create table `site_member` (
   unique key `mobile_unique` (`mobile`)
 ) engine=innodb default charset=utf8mb4 comment='会员';
 
-# 初始test/test
+-- 初始test/test
 insert into `site_member` (id, mobile, password, name, photo, register_time) values ('00000000', '12345678901', 'e70e2222a9d67c4f2eae107533359aa4', '测试', null, now());
 
+-- 会员课程报名
+drop table if exists `member_course`;
+create table `member_course` (
+  `id` char(8) not null default '' comment 'id',
+  `member_id` char(8) not null comment '会员id',
+  `course_id` char(8) not null comment '课程id',
+  `at` datetime(3) not null comment '报名时间',
+  primary key (`id`),
+  unique key `member_course_unique` (`member_id`, `course_id`)
+) engine=innodb default charset=utf8mb4 comment='会员课程报名';
 
 -- 对test表测试的脚本
 drop table if exists 'test';
