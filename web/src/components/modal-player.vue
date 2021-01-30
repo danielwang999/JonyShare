@@ -23,6 +23,7 @@
       playUrl(url) {
         let _this = this;
         _this.$refs.player.playUrl(url);
+        $("#player-modal").modal("show");
       },
 
       playVod(vod) {

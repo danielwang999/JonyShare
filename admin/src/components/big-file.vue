@@ -136,7 +136,7 @@
           let base64 = e.target.result;
           param.shard = base64;
 
-          _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/oss-append', param).then((response) => {
+          _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', param).then((response) => {
             let resp = response.data;
             // 显示进度条
             Progress.show(parseInt((shardIndex) * 100 / shardTotal));
