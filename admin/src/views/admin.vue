@@ -541,6 +541,7 @@
       $("body").removeClass("login-layout light-login");
       $("body").attr("class", "no-skin");
       // 初始化
+      console.log("跳转激活侧边栏log:" , _this.$route.name.replace("/", "-"));
       _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
 
       if (!_this.hasResourceRouter(_this.$route.name)) {

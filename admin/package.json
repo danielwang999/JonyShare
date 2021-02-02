@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "serve-dev": "vue-cli-service serve --mode dev",
-    "serve-prod": "vue-cli-service serve --mode dev",
-    "build": "vue-cli-service build --mode dev" ,
+    "serve-prod": "vue-cli-service serve --mode prod",
+    "build": "vue-cli-service build --mode prod" ,
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

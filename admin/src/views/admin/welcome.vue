@@ -9,7 +9,7 @@
     name: 'welcome',
     mounted: function() {
       // sidebar激活样式方法一
-      // this.$parent.activeSidebar("welcome-sidebar");
+      this.$parent.activeSidebar("welcome-sidebar");
     },
     methods: {
     }
