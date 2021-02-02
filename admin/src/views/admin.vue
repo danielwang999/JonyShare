@@ -361,7 +361,7 @@
             <b class="arrow"></b>
           </li>
           <!-- 系统管理导航 -->
-          <li class="active open" v-show="hasResource('01')">
+          <li class="open" v-show="hasResource('01')">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-desktop"></i>
               <span class="menu-text">
@@ -408,7 +408,7 @@
           </li>
 
           <!-- 业务管理导航 -->
-          <li class="active open" v-show="hasResource('02')">
+          <li class="open" v-show="hasResource('02')">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-desktop"></i>
               <span class="menu-text">
@@ -449,7 +449,7 @@
             </ul>
           </li>
 
-          <li class="active open" v-show="hasResource('03')">
+          <li class="open" v-show="hasResource('03')">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-desktop"></i>
               <span class="menu-text">
@@ -541,7 +541,6 @@
       $("body").removeClass("login-layout light-login");
       $("body").attr("class", "no-skin");
       // 初始化
-      console.log("跳转激活侧边栏log:" , _this.$route.name.replace("/", "-"));
       _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
 
       if (!_this.hasResourceRouter(_this.$route.name)) {
@@ -556,7 +555,7 @@
       $route: {
         handler:function(val, oldVal){
           // sidebar激活样式方法二
-          console.log("---->页面跳转：", val, oldVal);
+          //console.log("---->页面跳转：", val, oldVal);
           let _this = this;
 
           if (!_this.hasResourceRouter(val.name)) {
@@ -584,7 +583,7 @@
         // 如果有父菜单，父菜单的兄弟菜单去掉open active，父菜单增加open active
         let parentLi = $("#" + id).parents("li");
         if (parentLi) {
-          parentLi.siblings().removeClass("open active");
+          parentLi.siblings().removeClass("active");
           parentLi.siblings().find("li").removeClass("active");
           parentLi.addClass("open active");
         }
